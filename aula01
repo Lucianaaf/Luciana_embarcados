@@ -2,17 +2,23 @@ Resolução das questões da Aula 01
 
 1) O que são sistemas embarcados?
 Sistemas embarcados são normalmente parte de um produto, os quais exercem uma função específica ao relacionar software e hardware
-com o intuito de controlar processos. As funções agregadas são pré definidas de modo que esses proporcionam um processo mais objetivo. Os sistemas embarcados são 
-sistemas microprocessados, que devido suas caracteríticas podem otimizar projetos. Dentre as características têm-se a possibilidade
-de operar com bateria, apresenta tolerância a falhas e segurança.
+com o intuito de controlar processos. As funções agregadas são pré definidas de modo que esses proporcionam um processo mais objetivo. 
+Os sistemas embarcados são sistemas microprocessados, que devido suas caracteríticas podem otimizar projetos. Dentre as características 
+têm-se a possibilidade de operar com bateria, apresenta tolerância a falhas e segurança.
 
 2) O que são sistemas microprocessados?
 
 3) Apresente aplicações de sistemas embarcados:
-- Para indústria automotiva: injeção eletrônica
-- Para eletrodomésticos:
+- Para indústria automotiva: injeção eletrônica, freios ABS
+- Para eletrodomésticos: impressora, TV
 - Para automação residencial: controle de temperatura de arcondicionado
 
 4) Cite arquiteturas possíveis e diferenças entre elas.
-
+Microcontroladores: estes
+Processadores de propósito em geral
+DSps
+FPGAs
+ASICs
+SOCs
+MPSoCs
 5) para que usarmos Raspberry Pi na disciplina, ao invés de outro sistema ou chip.
