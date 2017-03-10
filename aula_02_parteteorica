@@ -1,0 +1,75 @@
+Aula_2 Parte teórica
+
+1. Por que o Linux recebeu esse nome?
+Esse nome foi dado ao Linux como uma junção devido o seu criador... e por ser variante free software do Unix.
+
+2. O que são deamos?
+São programas que rodam em segundo plano, em que o usuário não controla diretamente.
+
+3. O que shell?
+É o terminal, o qual permite acessar pastas, diretórios, a fim de inserir os diversos recursos.
+
+4. Por que é importante evitar executar o terminal como super usuário?
+
+5. Qual o botão do teclado completa o que o usuário escreve no terminal, de acordo com o contexto? Tab
+6. 
+
+7. Apresente os respectivos comandos no terminal para:
+	(a) Obter mais informações sobre o comando. 
+	Para isso pode-se acessar o manual através do comando man.
+
+	(b) Apresentar uma lista com arquivos dentro de uma pasta.
+	O comando que apresenta tais aquivos é o ls. Para ver aquivos não ocultos basta escrever o comando ls -l, porém para ver também arquivos ocultos utiliza-se o comando ls -la.
+
+	(c) Apresentar caminho completo da pasta.
+
+	(d) Trocar de pasta.
+	Basta utilizar o comando d.
+
+	(e) Criar uma pasta.
+
+	(f)  Apagar arquivos definitivamente.
+	O comando utilizado para tal finalidade é o rm.
+
+	(g) Apagar pastas definitivamente.
+	O comando que permite apagar pastas definitivamente é o rm -r.
+
+	(h) Copiar aquivos.
+	O comando é o cp o nome do arquivo que se queira copiar e o nome do novo aquivo.
+
+	(i) Copiar pastas.
+	O comando para isso é o cp -r.
+
+	(j) Mover arquivos.
+	O comando é o mv.
+	
+	(k) Mover pastas.
+	O comando utilizado é o mv ????
+
+	(l) Renomear pastas.
+
+	(m) Apresentar o conteúdo de um arquivo.
+	O comando é o cat out.txt
+	
+	(n) Apresentar o tipo de um arquivo.
+  
+	(o) Limpar a tela do terminal.
+  O comando a ser utilizado é o clear.
+  
+  (p) Encontrar ocorrências de palavras-chave em um arquivo-texto.
+  
+  (q) Ordenar informações em um arquivo-texto.
+  
+  (r) Substituir ocorrências de palavras-chave em um arquivo-texto.
+  
+  (s) Conferir se dois arquivos são iguais.
+  
+  (t) Escrever algo na tela.
+ 
+	
+	Segunda Atividade
+ 1. 
+
+
+
+
