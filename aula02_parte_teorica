@@ -38,7 +38,7 @@ São programas que rodam em segundo plano, em que o usuário não controla diret
 	O comando é o cp o nome do arquivo que se queira copiar e o nome do novo aquivo.
 
 	(i) Copiar pastas.
-	O comando para isso é o cp -r.
+	O comando para isso é o cp.
 
 	(j) Mover arquivos.
 	O comando é o mv.
@@ -67,8 +67,7 @@ São programas que rodam em segundo plano, em que o usuário não controla diret
   (t) Escrever algo na tela.
  
 	
-	Segunda Atividade
- 1. 
+
 
 
 
