@@ -17,15 +17,57 @@ Para todas as questões, escreva os comandos correspondentes no terminal.
 Para as questões a seguir, use a pasta no endereço https://github.com/DiogoCaetanoGarcia/Sistemas_Embarcados/raw/master/Questoes/Arqs_aula_02.zip
 
 6. Liste somente os arquivos com extensão .txt.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls *.txt
 
 7. Liste somente os arquivos com extensão .png.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls *.png
 
 8. Liste somente os arquivos com extensão .jpg.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls *.jpg
 
 9. Liste somente os arquivos com extensão .gif.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls *.gif
 
 10. Liste somente os arquivos que contenham o nome 'cal'.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls 
 
 11. Liste somente os arquivos que contenham o nome 'tux'.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls 
 
 12. Liste somente os arquivos que comecem com o nome 'tux'.
+  Fazendo ao abrir o terminal:
+  $ pwd
+	$ cd Documentos
+	$ cd Documents
+  $ cd Arquivos
+	$ ls tux*
