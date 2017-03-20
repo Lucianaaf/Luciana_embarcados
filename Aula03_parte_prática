@@ -1,47 +1,253 @@
+Data: 14/03/2017
+
 Para todas as questões, compile-as com o gcc e execute-as via terminal.
 
 1. Crie um "Olá mundo!" em C.
+   Código em C
+	#include <stdio.h>
 
+	int main()
+	{
+		printf("Ola mundo!\n");
+
+	return 0;
+	}
+
+   Para compilar no terminal foram seguidos os seguintes comandos:
+	$ pwd
+	$ cd Documentos
+	$ gcc Ola_mundo.c -o olamundo
+	$ ./olamundo
+ 
+   No terminal aparece Ola mundo!	
+	
+	
 2. Crie um código em C que pergunta ao usuário o seu nome, e imprime no terminal "Ola " e o nome do usuário. Por exemplo, considerando que o código criado recebeu o nome de 'ola_usuario_1':
 	$ ./ola_usuario_1
 	$ Digite o seu nome: Eu
 	$ Ola Eu
 	$
 
+  Código em C:
+	#include <stdio.h>
+	#include <string.h>
+
+	int main()
+	{
+   		char nome[15];
+
+		printf("Digite o seu nome:\n");
+		scanf("%s", nome);
+		printf("Ola, %s. \n", nome);
+	
+		return 0;
+	}
+
+  Para compilar basta fazer os seguintes comandos:
+	$ pwd
+	$ cd Documentos
+	$ gcc questao2.c -o olavoce
+	$ ./olavoce
+
+  No terminal apareceu:
+	Digite o seu nome:
+	Luciana
+
+  Por fim apareceu:
+ 	Ola, Luciana.
+
 3. Apresente os comportamentos do código anterior nos seguintes casos:
 	(a) Se o usuário insere mais de um nome.
 		$ ./ola_usuario_1 Eu Mesmo
-	(b) Se o usuário insere mais de um nome entre parênteses. Por exemplo:
+
+	    Escrevendo os seguintes comandos no terminal:
+	 	$ gcc questao2.c -o olavoce
+		$ ./olavoce
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+	        Luciana Alves
+
+  	    Por fim apareceu:
+ 	    Ola, Luciana.
+
+	    (Nesse caso, ele apresentou apenas o primeiro nome)
+
+	(b) Se o usuário insere mais de um nome entre aspas. Por exemplo:
 		$ ./ola_usuario_1 "Eu Mesmo"
+
+	    Escrevendo os seguintes comandos no terminal:
+	 	$ gcc questao2.c -o olavoce
+		$ ./olavoce
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+	        "Luciana Alves"
+
+  	    Na terminal obteve-se:
+ 	    Ola, "Luciana.
+
+	    (Nesse caso, ele apresentou apenas a primeira aspa e primeiro nome)
+
+	
 	(c) Se é usado um pipe. Por exemplo:
 		$ echo Eu | ./ola_usuario_1
+
+	    Escrevendo os seguintes comandos no terminal:
+	 	$ echo Luciana | ./olavoce
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        Ola, Luciana.
+
+	    (Nesse caso, ele apresentou já o que deveria inicialmente)
+
+
 	(d) Se é usado um pipe com mais de um nome. Por exemplo:
 		$ echo Eu Mesmo | ./ola_usuario_1
-	(e) Se é usado um pipe com mais de um nome entre parênteses. Por exemplo:
+
+	    Escrevendo os seguintes comandos no terminal:
+	 	$ echo Luciana Alves | ./olavoce
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        Ola, Luciana.
+
+	    (Nesse caso, ele apresentou apenas o primeiro nome)
+
+	(e) Se é usado um pipe com mais de um nome entre aspas. Por exemplo:
 		$ echo Eu Mesmo | ./ola_usuario_1
+
+	    Escrevendo os seguintes comandos no terminal:
+	 	$ echo "Luciana Alves" | ./olavoce
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        Ola, Luciana.
+
+	    (Nesse caso, ele apresentou apenas o primeiro nome sem aspas)
+
 	(f) Se é usado o redirecionamento de arquivo. Por exemplo:
 		$ echo Ola mundo cruel! > ola.txt
 		$ ./ola_usuario_1 < ola.txt
+
+	    Escrevendo os seguintes comandos no terminal:
+	 	$ echo Ola mundo cruel! > ola.txt
+		$ ./olavoce < ola.txt
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        Ola, Ola.
+
+	    (Nesse caso, ele lei como string o arquivo que foi redirecionado)
+
 
 4. Crie um código em C que recebe o nome do usuário como um argumento de entrada (usando as variáveis argc e *argv[]), e imprime no terminal "Ola " e o nome do usuário. Por exemplo, considerando que o código criado recebeu o nome de 'ola_usuario_2':
 	$ ./ola_usuario_2 Eu
 	$ Ola Eu
 	$
 
+	Código em C:
+	#include <stdio.h>
+	#include <string.h>
+
+	int main(int argc, char **argv)
+	{
+   	   char nome[15]; 
+   
+           printf("Digite o seu nome:\n");
+	   scanf("%s", nome);
+	   printf("Ola, %s. \n", nome);
+	
+	   return 0;
+	}
+
+	Escrevendo os seguintes comandos no terminal:
+		$ gcc questao4.c -o olausuario
+		$ ./olausuario
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        Luciana
+
+	Por fim:
+		Ola, Luciana.
+
 5. Apresente os comportamentos do código anterior nos seguintes casos:
 	(a) Se o usuário insere mais de um nome.
 		$ ./ola_usuario_2 Eu Mesmo
-	(b) Se o usuário insere mais de um nome entre parênteses. Por exemplo:
+
+	Escrevendo os seguintes comandos no terminal:
+		$ gcc questao4.c -o olausuario
+		$ ./olausuario
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        Luciana Alves
+
+	Por fim:
+		Ola, Luciana.
+
+		(Nota-se que aparece o primeiro nome)
+
+	(b) Se o usuário insere mais de um nome entre aspas. Por exemplo:
 		$ ./ola_usuario_2 "Eu Mesmo"
+
+	Escrevendo os seguintes comandos no terminal:
+		$ gcc questao4.c -o olausuario
+		$ ./olausuario
+
+	    No terminal apareceu:
+	        Digite o seu nome:
+ 	        "Luciana Alves"
+
+	Por fim:
+		Ola, "Luciana.
+
+		(Nota-se que aparece o primeiro nome e a primeira aspa)
+
+
 	(c) Se é usado um pipe. Por exemplo:
 		$ echo Eu | ./ola_usuario_2
+
+	Escrevendo os seguintes comandos no terminal:
+		$ echo Luciana | ./olausuario
+		
+	    No terminal apareceu:
+	        Digite o seu nome:
+		Ola, Luciana.
+
 	(d) Se é usado um pipe com mais de um nome. Por exemplo:
 		$ echo Eu Mesmo | ./ola_usuario_2
-	(e) Se é usado um pipe com mais de um nome entre parênteses. Por exemplo:
+
+	Escrevendo os seguintes comandos no terminal:
+		$ echo Luciana Alves | ./olausuario
+		
+	    No terminal apareceu:
+	        Digite o seu nome:
+		Ola, Luciana.
+
+	(e) Se é usado um pipe com mais de um nome entre aspas. Por exemplo:
 		$ echo Eu Mesmo | ./ola_usuario_2
+
+	Escrevendo os seguintes comandos no terminal:
+		$ echo "Luciana Alves" | ./olausuario
+		
+	    No terminal apareceu:
+	        Digite o seu nome:
+		Ola, Luciana.
+
+	(Nesse caso apareceu apenas o primeiro nome, sem as aspas)
+
 	(f) Se é usado o redirecionamento de arquivo. Por exemplo:
 		$ echo Ola mundo cruel! > ola.txt
 		$ ./ola_usuario_2 < ola.txt
+		$ ./olausuario < ola.txt
+		
+	    No terminal apareceu:
+	        Digite o seu nome:
+		Ola, Ola.
+
 
 6. Crie um código em C que faz o mesmo que o código da questão 4, e em seguida imprime no terminal quantos valores de entrada foram fornecidos pelo usuário. Por exemplo, considerando que o código criado recebeu o nome de 'ola_usuario_3':
 	$ ./ola_usuario_3 Eu
@@ -49,11 +255,53 @@ Para todas as questões, compile-as com o gcc e execute-as via terminal.
 	$ Numero de entradas = 2
 	$
 
+	Código em C:
+
+	#include <stdio.h>
+	#include <string.h>
+
+	int main(int argc, char **argv)
+	{
+ 
+	   printf("Numero de entradas = %d\n", argc);
+	   printf("Ola, %s. \n", argv[argc - 1]);
+	
+	return 0;
+	}
+
+	Escrevendo os seguintes comandos no terminal:
+		$ gcc questao6.c -o olausuario1
+		$ ./olausuario1 Luciana Alves
+
+	    No terminal apareceu:
+	        Numero de entradas = 3
+		Ola, Alves.
+
+		(Nota-se que aparece o argumento 3-1, por isso apareceu Ola, Alves)
+
+
 7. Crie um código em C que imprime todos os argumentos de entrada fornecidos pelo usuário. Por exemplo, considerando que o código criado recebeu o nome de 'ola_argumentos':
 	$ ./ola_argumentos Eu Mesmo e Minha Pessoa
 	$ Argumentos: Eu Mesmo e Minha Pessoa
 	$
+ 
+	#include <stdio.h>
+	#include <string.h>
 
+	int main(int argc, char **argv)
+	{
+ 		int i;
+
+		printf("Numero de entradas = %d\n", argc);
+
+		for(i = 0; i <= (argc -1); i++)
+		{
+			printf("Argumentos: %s. ", argv[i]);
+		}
+
+			printf("\n");
+		return 0;
+	}
 8. Crie uma função que retorna a quantidade de caracteres em uma string, usando o seguinte protótipo:
 
 	int Num_Caracs(char *string);
