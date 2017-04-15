@@ -284,29 +284,61 @@ Para todas as questões, compile-as com o gcc e execute-as via terminal.
 	$ ./ola_argumentos Eu Mesmo e Minha Pessoa
 	$ Argumentos: Eu Mesmo e Minha Pessoa
 	$
+	
+Código em C- arquivo - aula3_questao7.c:
  
 	#include <stdio.h>
 	#include <string.h>
+	
 
-	int main(int argc, char **argv)
+	int main(int argc, char *argv[])
 	{
  		int i;
 
-		printf("Numero de entradas = %d\n", argc);
+		printf("Argumentos:");
 
 		for(i = 0; i <= (argc -1); i++)
 		{
-			printf("Argumentos: %s. ", argv[i]);
+			printf(" %s  ", argv[i]);	
 		}
-
-			printf("\n");
+		
+		printf("\n");
 		return 0;
 	}
+	
+No terminal:
+$ gcc aula3_questao7.c -o ola
+$ ./ola Luciana me ame mais
+Argumentos: ./ola   Luciana   me   ame   mais  
+
 8. Crie uma função que retorna a quantidade de caracteres em uma string, usando o seguinte protótipo:
 
 	int Num_Caracs(char *string);
 
 Salve-a em um arquivo separado chamado 'num_caracs.c'. Salve o protótipo em um arquivo chamado 'num_caracs.h'. Compile 'num_caracs.c' para gerar o objeto 'num_caracs.o'.
+
+Código em c:
+#include <stdio.h>
+//#include "num_caracs.h"
+
+int Num_Caracs(char *string)
+{
+	int i = 0;
+	
+
+	
+	while(string[i] != '\0')
+	{ 
+		i++;
+	}
+
+	
+    	return i;
+ 
+}
+
+No terminal escreveu-se:
+$gcc -c num_caracs.c
 
 9. Re-utilize o objeto criado na questão 8 para criar um código que imprime cada argumento de entrada e a quantidade de caracteres de cada um desses argumentos. Por exemplo, considerando que o código criado recebeu o nome de 'ola_num_caracs_1':
 	$ ./ola_num_caracs_1 Eu Mesmo
@@ -314,12 +346,123 @@ Salve-a em um arquivo separado chamado 'num_caracs.c'. Salve o protótipo em um 
 	$ Argumento: Eu / Numero de caracteres: 2
 	$ Argumento: Mesmo / Numero de caracteres: 5
 	$
+	
+Código em C:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "num_caracs.h"
+
+
+
+int main(int argc, char *argv[]){
+       
+	//int c;
+	int i;
+
+
+
+		for(i = 0; i < argc; i++)
+		{
+			printf("Argumentos: %s  Numero de caracteres: %d\n", argv[i], Num_Caracs(argv[i]));
+		}
+		
+		
+		return 0;
+	}
+
+No terminal fez-se:
+$ gcc -c num_caracs.c
+$ gcc main8.c num_caracs.o
+$ ./a.out Luciana me ame mais
+Argumentos: ./a.out  Numero de caracteres: 7
+Argumentos: Luciana  Numero de caracteres: 7
+Argumentos: me  Numero de caracteres: 2
+Argumentos: ame  Numero de caracteres: 3
+Argumentos: mais  Numero de caracteres: 4
+
 
 10. Crie um Makefile para a questão anterior.
+
+Código em c do Makefile:
+
+main: main8.o num_caracs.o
+	gcc main8.o num_caracs.o -o main8
+
+main8.o: main8.c
+	gcc -c main8.c
+
+num_caracs.o: num_caracs.c num_caracs.h
+	gcc -c num_caracs.c
+
+clean:
+	rm *.o
+	
+No terminal fez-se:
+$ make
+$ make clean
+$ .main8 Luciana me ame mais
+Argumentos: ./a.out  Numero de caracteres: 7
+Argumentos: Luciana  Numero de caracteres: 7
+Argumentos: me  Numero de caracteres: 2
+Argumentos: ame  Numero de caracteres: 3
+Argumentos: mais  Numero de caracteres: 4
 
 11. Re-utilize o objeto criado na questão 8 para criar um código que imprime o total de caracteres nos argumentos de entrada. Por exemplo, considerando que o código criado recebeu o nome de 'ola_num_caracs_2':
 	$ ./ola_num_caracs_2 Eu Mesmo
 	$ Total de caracteres de entrada: 25
 	$
+Nesse exercicio criei uma pasta "questao11e12" dentro da pasta "Aula_3"	
+Código em C:
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[]){
+       
+	int c = 0;
+	int i;
+
+
+
+		for(i = 0; i < argc; i++) 
+		{
+			
+			c += Num_Caracs(argv[i]);
+			
+			
+		}
+		
+		printf(" Numero de caracteres dos caracteres de entrada: %d\n", c);
+		
+		return 0;
+	}
+No terminal fez-se:
+$ gcc -c num_caracs.c
+$ gcc questao11.c num_caracs.o
+$ ./a.out Luciana me ame mais
+Numero de caracteres dos caracteres de entrada: 23
+
+
 
 12. Crie um Makefile para a questão anterior.
+
+Código em c do makefile:
+
+main: questao11.o num_caracs.o
+	gcc questao11.o num_caracs.o -o questao11
+
+questao11.o: questao11.c
+	gcc -c questao11.c
+
+num_caracs.o: num_caracs.c num_caracs.h
+	gcc -c num_caracs.c
+
+clean:
+	rm *.o
+	
+ $cd questao11e12
+ $make
+ $make clean
+ $ ./questao11 Luciana me ame mais
+Numero de caracteres dos caracteres de entrada: 23
