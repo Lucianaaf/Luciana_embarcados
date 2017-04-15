@@ -1,0 +1,330 @@
+Prática-Aula_04.txt
+
+Data: 21/03/2017
+
+Para todas as questões, compile-as com o gcc e execute-as via terminal.
+
+Questão 1. Crie um código em C para escrever "Ola mundo!" em um arquivo chamado 'ola_mundo.txt'.
+
+ Código em C:
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, const char *argv[]){
+
+	FILE *fp;
+	char string[100];
+	fp = fopen("ola_mundo.txt","w");
+	
+
+if(!fp)
+{
+	/* Arquivo ASCII, para escrita */
+	printf( "Erro na abertura do arquivo");
+	exit(0); }
+
+	printf("Entre com a string a ser gravada no arquivo:");
+	gets(string);
+	fputs(string, fp);
+	putc('\n', fp);
+
+	fclose(fp);
+	return 0;
+}
+
+No terminal escreveu-se:
+	$ cd Documentos
+  $ cd Aula4
+	$ gcc exercicio1.c -o olaeu
+	$ ./olaeu
+	Pediu para digitar a string: Ola Mundo!
+	$ ls
+	$ cat ola_mundo.txt
+	Mostrou na tela Ola Mundo!
+
+Questão 2. Crie um código em C que pergunta ao usuário seu nome e sua idade, e escreve este conteúdo em um arquivo com o seu nome e extensão '.txt'. Por exemplo, considerando que o código criado recebeu o nome de 'ola_usuario_1':
+	$ ./ola_usuario_1
+	$ Digite o seu nome: Eu
+	$ Digite a sua idade: 30
+	$ cat Eu.txt
+	$ Nome: Eu
+	$ Idade: 30 anos
+	$
+
+Código em C:
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, const char *argv[]){
+	
+	FILE *fp;
+
+//Declaração de variáveis
+	char str1[100];
+	char str2[100];
+	char str3[100];
+	char str4[100];
+	
+	int i;
+	
+	fp = fopen ("arquivo_exercicio2.txt", "w");
+
+//Dados do usuário:
+	printf("Digite o seu nome:");
+	gets(str1);
+	printf("Digite a sua idade:");
+	gets(str3);
+
+//Armazenamento dos dados e escrita no arquivo:
+	strcpy(str2, "Nome: ");
+	strcat(str2, str1);
+
+	for(i=0; str2[i]; i++)
+{
+	//Escrever caracter por caracter do nome
+	putc(str2[i], fp);
+}
+	strcpy(str4, "\nIdade: ");
+	strcat(str4, str3);
+
+	for(i=0; str4[i]; i++)
+{
+	//Escrever caracter por caracter da idade
+	putc(str4[i], fp);
+	
+}
+	putc('\n', fp);
+	fclose(fp);
+	return 0;
+}
+
+No terminal escreveu-se:
+	$ cd Documentos
+  $ cd Aula4
+	$ gcc exercicio2.c -o olausuario
+	$ ./olausuario
+	Digite o seu nome: Luciana
+	Digite a sua idade: 21
+	$ cat arquivo_exercicio2.txt
+	Mostrou na terminal: 
+  Nome: Luciana
+	Idade: 21
+
+	Nesse exercicio eu utilizei dois comandos novos: strcpy e strcat!
+  
+  Outra forma de fazer:
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main (int argc, const char *argv[]){
+
+FILE *fp;
+char string[50];
+char string2[5];
+int i;
+
+*fp = fopen ("arquivo_exercicio2.txt", "w");
+gets(string);
+
+
+printf ("Digite o seu nome: ");
+fgets(string, 49, stdin);
+
+for (i = 0; string[i]; i++){
+	putc(string[i], fp);
+
+}
+
+
+printf ("\nDigite a sua idade: ");
+gets(string2);
+
+for (i = 0; string2[i]; i++){
+	putc(string2[i], fp);
+
+}
+
+fclose(fp);
+
+
+printf ("\nNome: %s", string);
+printf ("\nIdade: %s anos", string2);
+return 0;
+}
+
+
+No terminal escreveu-se:
+	$ cd Documentos
+  $ cd Aula4
+	$ gcc exercicio2_novo.c -o olausuario
+	$ ./olausuario
+	Digite o seu nome: Luciana
+	Digite a sua idade: 21
+	$ cat arquivo_exercicio2.txt
+	Mostrou na terminal: 
+  Nome: Luciana
+	Idade: 21
+
+3. Crie um código em C que recebe o nome do usuário e e sua idade como argumentos de entrada (usando as variáveis argc e *argv[]), e escreve este conteúdo em um arquivo com o seu nome e extensão '.txt'. Por exemplo, considerando que o código criado recebeu o nome de 'ola_usuario_2':
+	$ ./ola_usuario_2 Eu 30
+	$ cat Eu.txt
+	$ Nome: Eu
+	$ Idade: 30 anos
+	$
+Código em C:
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, const char *argv[]){
+	
+	FILE *fp;
+	
+	
+	fp = fopen ("arquivo_exercicio3.txt", "w");
+
+	printf("Nome: %s \nIdade: %s anos\n", argv[1], argv[2]);
+
+	fclose(fp);
+
+	return 0;
+}
+
+No terminal escreveu-se:
+	$ cd Documentos
+	$ gcc exercicio3.c -o ola1
+	$ ./ola1 Luciana 21
+	Mostrou na terminal: Nome: Luciana
+			     Idade: 21 anos
+
+
+4. Crie uma função que retorna o tamanho de um arquivo, usando o seguinte protótipo:
+
+	int tam_arq_texto(char *nome_arquivo);
+
+Salve esta função em um arquivo separado chamado 'bib_arqs.c'. Salve o protótipo em um arquivo chamado 'bib_arqs.h'. Compile 'bib_arqs.c' para gerar o objeto 'bib_arqs.o'.
+
+
+
+5. Crie uma função que lê o conteúdo de um arquivo-texto e o guarda em uma string, usando o seguinte protótipo:
+
+	void le_arq_texto(char *nome_arquivo, char *conteúdo);
+
+Repare que o conteúdo do arquivo é armazenado no vetor 'conteudo[]'. Ou seja, ele é passado por referência. Salve esta função no mesmo arquivo da questão 4, chamado 'bib_arqs.c'. Salve o protótipo no arquivo 'bib_arqs.h'. Compile 'bib_arqs.c' novamente para gerar o objeto 'bib_arqs.o'.
+
+
+
+Código em C para o protótipo (arquivo chamado 'bib_arqs.h'.):
+int tam_arq_texto(char *nome_arquivo);
+void le_arq_texto(char *nome_arquivo, char *conteudo);
+
+Código em C para  a main()
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "bib_arqs.h"
+
+
+int main(int argc, char *argv[]){
+       
+
+	char palavra[200];
+
+	le_arq_texto(argv[1], palavra);
+       	printf("%s \n", palavra);	
+	
+
+    	return (0);
+   }
+
+
+Código em C para o arquivo( arquivo separado chamado 'bib_arqs.c')
+#include <stdio.h>
+#include <stdlib.h>
+#include "bib_arqs.h"
+#include <string.h>
+
+int tam_arq_texto(char *nome_arquivo)
+{
+
+	int i = 0;
+	char c;
+	FILE *fp;
+
+	fp = fopen(nome_arquivo,"r"); 
+	while((c = getc(fp) ) != EOF)
+	{ 
+		i = i++;
+	}
+
+	fclose(fp);
+    	return (i);
+ }
+
+
+void le_arq_texto(char *nome_arquivo, char *conteudo){
+
+	int i = 0;
+	char c;
+
+	//mecanismo que abilita criação de arquivo.
+	FILE *fp;
+
+	//Abre o arquivo para a leitura
+	fp = fopen(nome_arquivo,"r");
+
+	// c armazena o caracter lido do artigo( ler caracter por caracter)/ EOF = fim do arquivo
+	while((c = getc(fp) ) != EOF)
+	{ 
+		//O conteudo recebe o caracter e armazena no vetor conteudo. Cada caracter ficará em uma posição
+		conteudo[i] = c;
+		i++;
+	}
+
+	fclose(fp);
+    	
+}
+
+void ocorrencia_pc(char *nome_arquivo, char *palavra_chave){
+
+	int i = 0;
+	char c;
+	char conteudo[];
+	int j = 0;
+	char palavra[200];
+
+	//mecanismo que abilita criação de arquivo.
+	FILE *fp;
+
+	//Abre o arquivo para a leitura
+	fp = fopen(nome_arquivo,"r");
+
+	// c armazena o caracter lido do artigo( ler caracter por caracter)/ EOF = fim do arquivo
+	while((c = getc(fp) ) != EOF)
+	{ 	
+		conteudo[i] = c;
+		i++;
+
+	} 
+	
+	fclose(fp);
+    	
+}
+
+
+
+6. Crie um código em C que copia a funcionalidade básica do comando 'cat': escrever o conteúdo de um arquivo-texto no terminal. Reaproveite as funções já criadas nas questões anteriores. Por exemplo, considerando que o código criado recebeu o nome de 'cat_falsificado':
+	$ echo Ola mundo cruel! Ola universo ingrato! > ola.txt
+	$ ./cat_falsificado ola.txt
+	$ Ola mundo cruel! Ola universo ingrato!
+	$
+
+7. Crie um código em C que conta a ocorrência de uma palavra-chave em um arquivo-texto, e escreve o resultado no terminal. Reaproveite as funções já criadas nas questões anteriores. Por exemplo, considerando que o código criado recebeu o nome de 'busca_e_conta':
+	$ echo Ola mundo cruel! Ola universo ingrato! > ola.txt
+	$ ./busca_e_conta Ola ola.txt
+	$ 'Ola' ocorre 2 vezes no arquivo 'ola.txt'.
+$
+
