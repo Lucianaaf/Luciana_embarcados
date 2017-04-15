@@ -32,7 +32,11 @@ Basta apertar o botão direcional para cima.
 	$ pwd. Nesse caso, mostra o diretório referente a pasta atual.
 	
 	(d) Trocar de pasta.
-	Basta utilizar o comando d.
+	Se você estiver no diretório home/arquivos pessoais. Basta utilizar o comando 
+	$cd Documentos
+	e para mudar 
+	$cd 
+	$cd Imagens
 
 	(e) Criar uma pasta.
 	O comando para criar um diretório é $ mkdir <nome do diretório>
@@ -41,45 +45,90 @@ Basta apertar o botão direcional para cima.
 	O comando utilizado para tal finalidade é o rm.
 
 	(g) Apagar pastas definitivamente.
-	O comando que permite apagar pastas definitivamente é o rm -r.
+	O comando que permite apagar pastas definitivamente é o :
+	$rm -r <nome da pasta> ou 
+	$rm dir <nome da pasta>
 
 	(h) Copiar aquivos.
 	O comando é o cp o nome do arquivo que se queira copiar e o nome do novo aquivo.
-
+	$cd <Documentos> 
+	$cp <nome do arquivo> <nome do novo arquivo>
+	
 	(i) Copiar pastas.
 	O comando para isso é o cp.
+	$cp -r <nome da pasta> <nome da nova pasta>
 
 	(j) Mover arquivos.
-	O comando é o mv.
+	Move arquivos dentro do mesmo diretório. O comando é o:
+	$mv <nome do arquivo> <onde vc quer colocar>
 	
 	(k) Mover pastas.
-	O comando utilizado é o mv <origem> <destino>
+	Move dentro de um mesmo diretótio. O comando utilizado é o:
+	$ mv <nome da pasta de origem> <nome da pasta de destino>
 
 	(l) Renomear pastas.
 	O comando utilizado é o $ mv <nome_atual> <nome_novo> para renomear.	
 
 	(m) Apresentar o conteúdo de um arquivo.
-	O comando é o cat out.txt
+	Você entra no diretório e pede para mostrar o arquivo. Se quiser listar o que tem nesse diretótio basta colocar ls.
+	Mostrará no terminal.
+	$cd Documentos
+	$ls
+	$cat out.txt
 	
 	(n) Apresentar o tipo de um arquivo.
-	o comando usado é $ file <arquivo>
+	O comando usado é $ file <arquivo.extensão>
   
 	(o) Limpar a tela do terminal.
   	O comando a ser utilizado é o clear.
   
-  	(p) Encontrar ocorrências de palavras-chave em um arquivo-texto.
-	grep <trecho a procurar> arquivo.txt
-	grep <trecho a procurar> *
+  	(p) Encontrar ocorrências de palavras-chave em um arquivo-texto
+	Mostra a palavra com o trecho a procurar na linha.
+	$grep <trecho a procurar> arquivo.txt
+	Mostrar em todos os txt e ele ainda fala qual é o arquivo:
+	$grep <trecho a procurar> *<extensão>
 	
+	Exemplo:
+	$ grep po banana.txt
+	poooo
+	$ grep po *txt
+	arquivo_exercicio3.txt:populoso
+	banana.txt:poooo
+
+
   	(q) Ordenar informações em um arquivo-texto.
 	O comando para ordenar é sort <opções> <arquivo>
-
+	Ordena as informações.
+	
+	Exemplo:
+	~/Documentos$ sort banana.txt
+	0000
+	1112255
+	33355
+	laaaaaaaaaaa jooofdfrf
+	poooo
+	sengidhgdjyhgfjhkyjhoghm kkdelflgogoghhhghj
   
   	(r) Substituir ocorrências de palavras-chave em um arquivo-texto.
-	sed -i <s/palavra/outra/> arquivo.txt
+	$sed -i <s/palavra/outra/> arquivo.txt
   
   	(s) Conferir se dois arquivos são iguais.
-	diff <diretório1/arquivo1> <diretório2/arquivo2> 
+	$diff <diretório1/arquivo1> <diretório2/arquivo2> 
+	
+	No exemplo que eu fiz:
+	~/Documentos$ diff banana.txt ihhu
+	1,7c1
+	< sengidhgdjyhgfjhkyjhoghm kkdelflgogoghhhghj
+	< laaaaaaaaaaa jooofdfrf
+	< po
+	< 
+	< 1112255
+	< 33355
+	< 0000
+	---
+	> /populoso/populacao
+
+
   
   	(t) Escrever algo na tela.
 	Tem de utilizar o comando $ echo <string>
