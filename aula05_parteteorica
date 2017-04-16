@@ -135,7 +135,18 @@ Devem ser incluidas as seguintes bibliotecas:
 #include <stdio.h>
 #include <stdlib.h>
 
+A biblioteca stdio é responsável por funções de entrada e saída de dados, como por exemplo, funções printf e scanf. 
+A biblioteca stdlib é responsável pela conversão de strings para números. Ela funciona como um emulador da prompt do sistema 
+operacional, no Linux é o terminal que será emulado ( o terminal é um software que reproduz funções de modo a permitir a execução
+dos demais softwares.
+
 2. O que é a norma POSIX?
+
+A norma POSIX(Interface Portável entre Sistemas Operacionais) trata-se de normas definidas pelo IEEE, IEEE 1003, e internacionalmente, ISO/IEC 9945, que tem como objetivo 
+tornar um código fonte que atenda as normas POSIX portável para outro sistema POSIX, desse modo, um script pode ser utilizado
+em diferentes terminais e passa a não ser necessário fazer um script para cada shell. Isso permite que a produtividade aumente
+perante a abrangência de auação dos scripts.
+
 
 3. Considerando a norma POSIX, responda:
 	(a) Quais são as funções (e seus protótipos) para abrir e fechar arquivos?
@@ -238,4 +249,18 @@ lseek(fd, 6, SEEK_SET);
 read(fd, &c, 1);
 
 	(e) Quais bibliotecas devem ser incluídas no código para poder utilizar as funções acima?
-Protótipo:
+É necessário incluir as seguintes bibliotecas:
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
+
+<unistd.h> é uma interface composta por funções de chamada de sistema, como pipe,fork e entrada/saída(gravação, leitura).
+
+<fcntl.h> define as solicitações e argumentos para uso pelas funções fcntl () e open ().
+
+<termios.h> é uma biblioteca do POSIX que permite manipular as propriedades do terminal. 
+Exemplo :login em um console virtual 
+Digita-se a senha e não aparece nada, pode-se tirar a “opção” ECHO do terminal que estamos usando.
+
+
