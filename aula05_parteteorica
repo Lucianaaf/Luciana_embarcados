@@ -1,0 +1,190 @@
+Data: 23/03/2017
+
+1. Considerando a biblioteca-padrão da linguagem C, responda:
+	(a) Quais são as funções (e seus protótipos) para abrir e fechar arquivos?
+  ABRIR ARQUIVOS
+  Em C:
+  fopen - abre arquivo
+  
+  Protótipo:
+  FILE *fp;
+  fp = open (char *nome_do_arquivo, char *modo)
+  
+  Exemplo slide:
+  FILE *fp; 
+  // Declaração da estrutura de ponteiro
+  fp=fopen ("exemplo.bin","wb");
+  //abrir arquivo para escrita binária;
+  
+  FECHAR ARQUIVOS
+  Em C:
+  fclose - fecha arquivo 
+  
+  
+  Protótipo:
+ 	int fclose (FILE *ponteiro_para_arquivo);
+  
+  Exemplo slide:
+  //para fechar o arquivo no final do programa
+  fclose(fp);
+  return 0;
+ 
+  
+	(b) Quais são as funções (e seus protótipos) para escrever em arquivos?
+  
+  ESCREVER ARQUIVO
+  Em C:
+  Protótipo
+  int fprintf ( FILE * stream, const char * format, ... );
+  
+  Exemplo de programa do slide:
+  #include <stdio.h>
+  #include <stdlib.h>
+  int main() {
+  FILE *p;
+  char str[80],c;
+/* Le um nome para o arquivo a ser aberto: */
+printf("\n\n Entre com um nome para o arquivo:\n");
+gets(str);
+
+
+fprintf(p,"Este e um arquivo chamado:\n%s\n", str);
+
+fclose(p);
+/* abre novamente para a leitura*/
+p = fopen(str,"r");
+while (!feof(p))
+{
+fscanf(p,"%c",&c);
+printf("%c",c);
+}
+fclose(p);
+return(0);
+}
+
+	(c) Quais são as funções (e seus protótipos) para ler arquivos?
+  
+  LER ARQUIVOS
+  Em c
+  Protótipo:
+  int fscanf ( FILE * stream, const char * format, ... );
+  
+  Explicação:
+  FILE * stream - nome do arquivo
+  const char * format - tipo do arquivo
+  ... - 
+  
+  Exemplo da internet de como usar fscanf:
+  
+#include <stdio.h>
+
+int main(void)
+{
+	char url[]="arquivo.txt",
+	     ch1, ch2, ch3;
+	FILE *arq;
+	
+	arq = fopen(url, "r");
+	if(arq == NULL)
+			printf("Erro, nao foi possivel abrir o arquivo\n");
+	else
+  
+		while( (fscanf(arq,"%c %c %c\n", &ch1, &ch2, &ch3))!=EOF )
+    
+			printf("%c %c %c\n", ch1, ch2, ch3);
+	
+	fclose(arq);
+	
+	return 0;
+}
+  
+	(d) Quais são as funções (e seus protótipos) para reposicionar um ponteiro para arquivo?
+  
+int fseek ( FILE * stream, long int offset, int origin );
+  
+  
+	(e) Quais bibliotecas devem ser incluídas no código para poder utilizar as funções acima?
+
+2. O que é a norma POSIX?
+
+3. Considerando a norma POSIX, responda:
+	(a) Quais são as funções (e seus protótipos) para abrir e fechar arquivos?
+  Em POSIX
+  open - abre arquivo para leitura e escrita
+  
+ Protótipo:
+ int open(const char* path, int oflag, ...)
+ 
+ Explicação de cada descrição
+ int open- descritor do arquivo
+ path -nome do arquivo,tipo "arquivo_exercicio2.txt"
+ oflag -Flag de Abertura
+ 
+ Exemplo do slide 1:
+" Exemplo:
+ int fd;
+ fd = open(“/tmp/teste.txt”, O_WRONLY);"
+ 
+ Explicação:
+ O_WRONLY é uma flag aberta apenas para escrita.
+ 
+ Exemplo do slide 2:
+ "Exemplo:(read/write, criar se não existir)
+ int fd;
+ fd = open(“/tmp/teste.txt”, O_RDWR | O_CREAT);"
+ 
+ Explicação:
+ O_RDWR é uma flag aberta apenas para leitura.
+ O_CREAT é uma flag que cria arquivo se ele não existir.
+ 
+ 
+ FECHAR ARQUIVOS
+ Em POSIX:
+  fclose - fecha arquivo 
+  
+  Protótipo:
+  int close(nome do arquivo)
+  
+  Exemplo slide:
+  close(uart0_filestream);
+  return 0;
+
+ 
+	(b) Quais são as funções (e seus protótipos) para escrever em arquivos
+  ESCREVER ARQUIVO
+  Em POSIX
+  
+  Protótipo:
+  ssize_t write(int fildes, const void *buf, size_t nbyte);
+  
+  Explicação:
+  ssize_t - número de bytes escritos
+  int fildes -nome do arquivo
+  const void *buf -endereço do buffer
+  size_t nbyte - Número de bytes a serem escritos
+  
+  Exemplo:
+  short siX16=0x7FFF;
+  int res = write(fid, &siX16, sizeof(short) );
+  
+  
+	(c) Quais são as funções (e seus protótipos) para ler arquivos?
+  
+  LER ARQUIVOS
+  Em POSIX
+  Protótipo:
+  ssize_t read(int fildes, void *buf, size_t nbyte);
+  
+  Explicação:
+  ssize_t - número de bytes lidos
+  int fildes -nome do arquivo
+  void *buf -endereço do buffer
+  size_t nbyte - Número de bytes a serem lidos
+  
+Exemplo:
+short siX16;
+int res = read(fid, &siX16, sizeof(short) );
+
+
+	(d) Quais são as funções (e seus protótipos) para reposicionar um ponteiro para arquivo?
+	(e) Quais bibliotecas devem ser incluídas no código para poder utilizar as funções acima?
