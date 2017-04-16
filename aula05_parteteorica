@@ -1,8 +1,9 @@
 Data: 23/03/2017
 
 1. Considerando a biblioteca-padrão da linguagem C, responda:
+
 	(a) Quais são as funções (e seus protótipos) para abrir e fechar arquivos?
-  ABRIR ARQUIVOS
+  -ABRIR ARQUIVOS
   Em C:
   fopen - abre arquivo
   
@@ -16,7 +17,7 @@ Data: 23/03/2017
   fp=fopen ("exemplo.bin","wb");
   //abrir arquivo para escrita binária;
   
-  FECHAR ARQUIVOS
+  -FECHAR ARQUIVOS
   Em C:
   fclose - fecha arquivo 
   
@@ -99,11 +100,40 @@ int main(void)
 }
   
 	(d) Quais são as funções (e seus protótipos) para reposicionar um ponteiro para arquivo?
-  
+
+REPOSICIONAR PONTEIRO
+Em c:
+Protótipo:
 int fseek ( FILE * stream, long int offset, int origin );
+
+origin - O parâmetro origin determina a partir de onde os offset de movimentação serão
+
+Exemplo da internet:
+fseek(arquivo,0,SEEK_SET);
+
+Na linha acima “arquivo" é o ponteiro de arquivo, 
+0 é o numero de bytes a partir da origem que se tornará uma nova posição corrente.
+
+SEEK_SET - 0 - é macro para início de arquivo.
+	
+SEEK_CUR - 1 Posição corrente do arquivo	
   
+SEEK_END -2 -  Fim do arquivo	
+ 
+fseek(arq, 0, SEEK_SET) 
+//vai te jogar a "0 bytes do início do arquivo"
+
+fseek(arq, -2, SEEK_CUR) 
+//vai te jogar pra "2 bytes antes da posição anterior", ou seja, vai recuar o ponteiro de leitura do arquivo em 2 bytes.
+
+fseek(arq, -10, SEEK_END) vai te colocar a 10 bytes do fim do arquivo.
+
   
 	(e) Quais bibliotecas devem ser incluídas no código para poder utilizar as funções acima?
+	
+Devem ser incluidas as seguintes bibliotecas:
+#include <stdio.h>
+#include <stdlib.h>
 
 2. O que é a norma POSIX?
 
@@ -187,4 +217,25 @@ int res = read(fid, &siX16, sizeof(short) );
 
 
 	(d) Quais são as funções (e seus protótipos) para reposicionar um ponteiro para arquivo?
+	
+REPOSICIONAR PONTEIRO
+Em POSIX:
+lseek - reposicionao ponteiro do descritor do arquivo e um arquivo aberto
+
+Protótipo:
+off_t lseek(int fd, off_t offset, int whence);
+
+Explicação:
+int fd -nome do arquivo
+off_t offset - Valor de offset
+int whence - SEEK_SET; SEEK_CUR;SEEK_END;
+
+Exemplo do slide:O Arquivo teste.txt contém o texto“Hello World”
+int fd;
+char c;
+fd = open(“/tmp/teste.txt”, O_RDONLY);
+lseek(fd, 6, SEEK_SET);
+read(fd, &c, 1);
+
 	(e) Quais bibliotecas devem ser incluídas no código para poder utilizar as funções acima?
+Protótipo:
