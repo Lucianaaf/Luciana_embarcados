@@ -287,6 +287,33 @@ Reaproveite as funções já criadas nas questões anteriores. Por exemplo, cons
 	$ ./cat_falsificado ola.txt
 	$ Ola mundo cruel! Ola universo ingrato!
 	$
+	
+	
+Código em C exercicio6.c:
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "bib_arqs.h"
+
+
+int main(int argc , char *argv[])
+{
+	char palavra[200];
+
+	le_arq_texto(argv[1],palavra);
+
+	printf("%s",palavra);
+
+
+return 0;
+}
+
+ $gcc -c exercicio6.c
+ $ echo Ola Mundo cruel! > ola.txt
+ $ ./exercicio6 ola.txt
+ bash: ./exercicio6: No such file or directory
+
 
 7. Crie um código em C que conta a ocorrência de uma palavra-chave em um arquivo-texto, e escreve o resultado no terminal. Reaproveite as funções já criadas nas questões anteriores. Por exemplo, considerando que o código criado recebeu o nome de 'busca_e_conta':
 	$ echo Ola mundo cruel! Ola universo ingrato! > ola.txt
