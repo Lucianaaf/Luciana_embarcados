@@ -11,16 +11,25 @@ Código em C com as funções da norma POSIX:
 #include <unistd.h>	// Para a funcao close()
 #include <stdlib.h>	// Para a função exit()
 
-int main(int argc, const char * argv[])
+int main(int argc, const char *argv[])
 {
 	int fp;
+	char string[20] = "Ola mundo!";
+	int i;
 	
-	fp = open("ola_mundo.txt", O_RDWR | O_CREAT);
-	if(fp==-1)
-	{
-		printf("Erro na abertura do arquivo.\n");
-		exit(-1);
-	}
+	fp = open("ola_mundo.txt", O_WRONLY | O_CREAT, S_IRWXU);
+	
+
+		for(i=0; string[i]; i++)
+		{
+		//Escreve caracter por caracter;	
+		write(fp, &(string[i]), 1); 
+
+		}
+	
+	close(fp);
+
+	
 	close(fp);
 
 	return 0;
@@ -29,12 +38,11 @@ int main(int argc, const char * argv[])
 No terminal:
 $cd Documentos
 $cd Aula5
+$cd Code
 $gcc exercicio1.c -o olha
-$,/olha Ola mundo
+$./olha 
 
-Na pasta da Aula5 o arquivo ola_mundo.txt foi criado, porém ao colocar 
-$cat ola_mundo.txt
-apareceu que eu não tinha permissão para ver o arquivo.
+Na pasta da Aula5 o arquivo ola_mundo.txt foi criado, e nele esta escrito Ola Mundo!
 
 2. Crie um código em C que pergunta ao usuário seu nome e sua idade, e escreve este conteúdo em um arquivo com o seu nome e 
 extensão '.txt'. Por exemplo, considerando que o código criado recebeu o nome de 'ola_usuario_1':
@@ -45,8 +53,65 @@ extensão '.txt'. Por exemplo, considerando que o código criado recebeu o nome 
 	$ Nome: Eu
 	$ Idade: 30 anos
 	$
-  
+Código em C: 
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
+int main(int argc, const char *argv[])
+{
+	int fp; 
+	int i ;
+	char nome[50];
+	char idade[50];
+
+	//Perguntar nome e idade do usuário:
+	printf("Digite o seu nome:");
+	gets(nome);
+	printf("Digite a sua idade:");
+	gets(idade);
+	
+	//abre o arquivo. Se não colocar o S_IRWXU não tem acesso ao arquivo
+	fp = open (nome, O_WRONLY | O_CREAT, S_IRWXU);
+	if(fp==-1)
+	{
+		printf ("Erro na abertura do arquivo.\n");
+		exit (1);
+	}
+
+	// Escreve caracterer por caracterer da string
+	write(fp, "Nome: ", 6*sizeof(char)); 	
+		for(i = 0 ; nome[i]; i++)
+		{	
+	 		write(fp, &(nome[i]), 1); 	
+			
+		}
+	write(fp, "\r\n", 2);
+
+	write(fp, "Idade: ", 7*sizeof(char)); 
+		for(i = 0 ; idade[i]; i++)
+		{
+			write(fp, &(idade[i]), 1); 
+			
+		}
+	write(fp, " anos", 5);
+	write(fp, "\r\n", 2);
+	close(fp);
+	return 0;
+}
+
+No terminal:
+$cd Documentos
+$cd Aula5
+$cd Code
+$gcc exercicio2.c -o exer2
+$./exer2
+Digite o seu nome: Luciana
+Digite a sua idade: 21
+$cat Luciana
+Nome: Luciana
+Idade: 21 anos
 
 
 3. Crie um código em C que recebe o nome do usuário e e sua idade como argumentos de entrada (usando as variáveis argc e *argv[])
