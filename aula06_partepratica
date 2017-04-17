@@ -1,8 +1,74 @@
 Data: 28/03/2017
 
 1. Crie um código em C para gerar três processos-filho usando o fork().
+Código em c exercicio1.c:
 
-2. Crie um código em C que recebe o nome de diversos comandos pelos argumentos de entrada (argc e *argv[]), e executa cada um sequencialmente usando system(). Por exemplo, considerando que o código criado recebeu o nome de 'serial_system', e que ele foi executado na pasta '/Sistemas_Embarcados/Code/Aula_06', que contem diversos arquivos:
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+
+int main(int argc, const char **argv[])
+{
+	//Declaração dos processos filhos:
+	pid_t child_pid1;
+	pid_t child_pid2;
+	pid_t child_pid3;
+	
+	//Identificador do programa original:
+	printf ("the main program process ID is %d\n", (int) getpid ());
+
+	//Criação do primeiro filho:
+	child_pid1 = fork();
+	if (child_pid1 == 0)
+	{
+		printf("Este é o processo FILHO_1 %d\n", (int) getpid());
+		
+	}
+	else
+	{
+	 	child_pid2 = fork();
+		//Criação do segundo filho:
+	 	if(child_pid2 == 0)
+		{	
+		    printf("Este é o processo FILHO_2 %d\n", (int) getpid());
+		
+		}
+		else
+		{	
+		child_pid3 = fork();
+		//Criação do terceiro filho:
+			if(child_pid3 == 0)
+			{	
+			   printf("Este é o processo FILHO_3 %d\n", (int) getpid());
+		
+			}
+			else
+			{
+		
+			    printf("Este é o processo PAI.%d \n", (int) getpid());
+		
+			}
+		}
+	}
+
+	return 0;
+}
+
+No terminal:
+$ gcc exercicio1.c -o ola
+$ ./ola
+the main program process ID is 8598
+Este é o processo FILHO_1 8599
+Este é o processo PAI.8598 
+Este é o processo FILHO_2 8600
+Este é o processo FILHO_3 8601
+
+2. Crie um código em C que recebe o nome de diversos comandos pelos argumentos de entrada (argc e *argv[]), e executa cada um 
+sequencialmente usando system(). Por exemplo, considerando que o código criado recebeu o nome de 'serial_system', e que ele 
+foi executado na pasta '/Sistemas_Embarcados/Code/Aula_06', que contem diversos arquivos:
 	$ ./serial_system pwd echo ls echo cal
 	$ ~/Sistemas_Embarcados/Code/Aula_06
 	$
@@ -17,8 +83,49 @@ Data: 28/03/2017
 	$ 19 20 21 22 23 24 25
 	$ 26 27 28 29 30 31
 	$
+	
+Código em c exercicio2.c:
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
 
-3. Crie um código em C que recebe o nome de diversos comandos pelos argumentos de entrada (argc e *argv[]), e executa cada um usando fork() e exec().
+int main(int argc, char **argv)
+{
+
+    char *argumentos_entradas;
+    int i;
+
+    for(i = 1;i <= argc; i++)
+    {  
+      argumentos_entradas = argv[i];
+      system(argumentos_entradas);
+    
+    }
+    return 0;
+}
+
+No terminal:
+$ gcc exercicio2.c -o exercicio2
+$ ./exercicio2 pwd echo ls echo cal
+/home/luciana/Documentos/Aula6
+
+exercicio1.c   exercicio1.o  exercicio2.c  ola	      tentativa1.c
+exercicio1.c~  exercicio2    exercicio2.o  tentativa
+
+     Abril 2017       
+Do Se Te Qu Qu Se Sá  
+                   1  
+ 2  3  4  5  6  7  8  
+ 9 10 11 12 13 14 15  
+16 17 18 19 20 21 22  
+23 24 25 26 27 28 29  
+30                    
+
+3. Crie um código em C que recebe o nome de diversos comandos pelos argumentos de entrada (argc e *argv[]), e executa cada 
+um usando fork() e exec().
 
 4. Crie um código em C que gera três processos-filho usando o fork(), e que cada processo-filho chama a seguinte função uma vez:
 
@@ -31,7 +138,170 @@ Data: 28/03/2017
 	}
 
 (Repare que a função Incrementa_Variavel_Global() recebe como entrada o ID do processo que a chamou.)
-Responda: a variável global 'v_global' foi compartilhada por todos os processos-filho, ou cada processo enxergou um valor diferente para esta variável?
+Responda: a variável global 'v_global' foi compartilhada por todos os processos-filho, ou cada processo enxergou um valor 
+diferente para esta variável? Não, a variável global manteve-se em 1 para todos os casos.
+
+Código em c:
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+
+int v_global = 0; // Variavel global para este exemplo
+	void Incrementa_Variavel_Global(pid_t id_atual)
+	{
+		v_global++;
+		printf("ID do processo que executou esta funcao = %d\n", id_atual);
+		printf("v_global = %d\n", v_global);
+	}
+
+
+int main(int argc, char const *argv[])
+{
+	pid_t child_pid1;
+	pid_t child_pid2;
+	pid_t child_pid3;
+
+	printf("the main program process ID is %d\n",(int) getpid());
+
+	child_pid1 = fork();
+	if (child_pid1 == 0)
+	{
+	  printf("Este é o processo FILHO_1 %d\n", (int) getpid());
+	  Incrementa_Variavel_Global(getpid());
+	}
+	else
+	{
+		child_pid2 = fork();
+		if (child_pid2 == 0)
+		{
+		  printf("Este é o processo FILHO_2 %d\n", (int) getpid());
+		  Incrementa_Variavel_Global(getpid());
+		}
+		else
+		{
+			child_pid3 = fork();
+			if (child_pid3 == 0)
+			{
+			  printf("Este é o processo FILHO_3 %d\n", (int) getpid());
+			  Incrementa_Variavel_Global(getpid());
+			}
+			else
+			{
+				printf("Este é o processo PAI.%d \n", (int) getpid());
+				
+			}
+		}
+
+		
+
+	}
+	
+	
+		
+	return 0;
+}
+
+
+
+No terminal:
+$ gcc exercicio4.c -o exercicio4
+$ ./exercicio4
+the main program process ID is 8761
+Este é o processo FILHO_1 8762
+ID do processo que executou esta funcao = 8762
+v_global = 1
+Este é o processo PAI.8761 
+Este é o processo FILHO_2 8763
+ID do processo que executou esta funcao = 8763
+v_global = 1
+Este é o processo FILHO_3 8764
+ID do processo que executou esta funcao = 8764
+v_global = 1
 
 5. Repita a questão anterior, mas desta vez faça com que o processo-pai também chame a função Incrementa_Variavel_Global().
-Responda: a variável global 'v_global' foi compartilhada por todos os processos-filho e o processo-pai, ou cada processo enxergou um valor diferente para esta variável?
+Responda: a variável global 'v_global' foi compartilhada por todos os processos-filho e o processo-pai, ou cada processo 
+enxergou um valor diferente para esta variável? A mesma variável global.
+
+Código em c exercicio5.c:
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+
+int v_global = 0; // Variavel global para este exemplo
+	void Incrementa_Variavel_Global(pid_t id_atual)
+	{
+		v_global++;
+		printf("ID do processo que executou esta funcao = %d\n", id_atual);
+		printf("v_global = %d\n", v_global);
+	}
+
+
+int main(int argc, char const *argv[])
+{
+	pid_t child_pid1;
+	pid_t child_pid2;
+	pid_t child_pid3;
+
+	printf("the main program process ID is %d\n",(int) getpid());
+
+	child_pid1 = fork();
+	if (child_pid1 == 0)
+	{
+	  printf("Este é o processo FILHO_1 %d\n", (int) getpid());
+	  Incrementa_Variavel_Global(getpid());
+	}
+	else
+	{
+		child_pid2 = fork();
+		if (child_pid2 == 0)
+		{
+		  printf("Este é o processo FILHO_2 %d\n", (int) getpid());
+		  Incrementa_Variavel_Global(getpid());
+		}
+		else
+		{
+			child_pid3 = fork();
+			if (child_pid3 == 0)
+			{
+			  printf("Este é o processo FILHO_3 %d\n", (int) getpid());
+			  Incrementa_Variavel_Global(getpid());
+			}
+			else
+			{
+				printf("Este é o processo PAI.%d \n", (int) getpid());
+				Incrementa_Variavel_Global(getpid());
+			}
+		}
+
+		
+
+	}
+	
+	
+		
+	return 0;
+}
+
+
+No terminal:
+$ gcc exercicio5.c -o exercicio5
+$ ./exercicio5
+the main program process ID is 8786
+Este é o processo PAI.8786 
+ID do processo que executou esta funcao = 8786
+v_global = 1
+Este é o processo FILHO_1 8787
+Este é o processo FILHO_2 8788
+ID do processo que executou esta funcao = 8787
+ID do processo que executou esta funcao = 8788
+v_global = 1
+v_global = 1
+Este é o processo FILHO_3 8789
+ID do processo que executou esta funcao = 8789
+v_global = 1
