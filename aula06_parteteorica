@@ -58,15 +58,16 @@ Não, pois primeiro tem de ser feito o fork(), para criar a cópia e somente dep
 5. Quais são as características básicas das seguintes funções:
 (a) execp()?
 
-Em seguida, usamos a função execv que vai criar um novo processo, um processo filho, que é a execução do programa "teste".
-Esse programa "teste" exibe sua pid, que também é 11685, mesmo pid do processo pai.
-Por fim, tem um printf "Eu tenho um segredo pra contar", que não é exibido.
-A função execv mata o processo pai, e o filho pega sua PID.
-Por isso o último print não apareceu, pois o processo pai foi substituído pelo filho!
+
 
 
 (b) execv()?
 funções com terminação v aceitam que a lista de argumentos do novo programa seja nula.
+Usamos a função execv que vai criar um novo processo, um processo filho, que é a execução do programa "teste".
+Esse programa "teste" exibe sua pid, que também é 11685, mesmo pid do processo pai.
+Por fim, tem um printf "Eu tenho um segredo pra contar", que não é exibido.
+A função execv mata o processo pai, e o filho pega sua PID.
+Por isso o último print não apareceu, pois o processo pai foi substituído pelo filho!
 
 (c) exece()
 funções com terminação e aceitam um argumento adicional. 
@@ -74,4 +75,7 @@ funções com terminação e aceitam um argumento adicional.
 (d) execvp()?
 aceitam que o nome ou procura do programa esteja no current.path
 	(e) execve()?
+Aceita que a nova lista de argumentos do programa seja nula
+	
 	(f) execle()?
+Aceita argumentos adicionais.
