@@ -176,15 +176,113 @@ Idade: 15 anos
 
 	int tam_arq_texto(char *nome_arquivo);
 
-Salve esta função em um arquivo separado chamado 'bib_arqs.c'. Salve o protótipo em um arquivo chamado 'bib_arqs.h'. Compile 'bib_arqs.c' para gerar o objeto 'bib_arqs.o'.
+Salve esta função em um arquivo separado chamado 'bib_arqs.c'. Salve o protótipo em um arquivo chamado 'bib_arqs.h'. 
+Compile 'bib_arqs.c' para gerar o objeto 'bib_arqs.o'.
+
+Código do arquivo bib_arqs.h:
+int tam_arq_texto(char *nome_arquivo);
+void le_arq_texto(char *nome_arquivo, char *conteudo);
+
+Código da função em C bib_arqs.c:
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "bib_arqs.h"
+
+
+int tam_arq_texto(char *nome_arquivo)
+{
+
+	int i = 0;
+	char c;
+	int fp;
+
+	fp = open(nome_arquivo, O_WRONLY | O_CREAT , S_IRWXU);
+ 
+	while(read (fp, &c, sizeof(c))!= 0)
+	{ 
+		i = i++;
+	}
+
+	close(fp);
+    	return (i);
+ }
+ 
+No terminal:	
+$cd Documentos
+$cd Aula5
+$cd Code
+$gcc -c bib_arqs.c
+
 
 5. Crie uma função que lê o conteúdo de um arquivo-texto e o guarda em uma string, usando o seguinte protótipo:
 
 	void le_arq_texto(char *nome_arquivo, char *conteúdo);
 
-Repare que o conteúdo do arquivo é armazenado no vetor 'conteudo[]'. Ou seja, ele é passado por referência. Salve esta função no mesmo arquivo da questão 4, chamado 'bib_arqs.c'. Salve o protótipo no arquivo 'bib_arqs.h'. Compile 'bib_arqs.c' novamente para gerar o objeto 'bib_arqs.o'.
+Repare que o conteúdo do arquivo é armazenado no vetor 'conteudo[]'. Ou seja, ele é passado por referência.
+Salve esta função no mesmo arquivo da questão 4, chamado 'bib_arqs.c'. Salve o protótipo no arquivo 'bib_arqs.h'.
+Compile 'bib_arqs.c' novamente para gerar o objeto 'bib_arqs.o'.
 
-6. Crie um código em C que copia a funcionalidade básica do comando 'cat': escrever o conteúdo de um arquivo-texto no terminal. Reaproveite as funções já criadas nas questões anteriores. Por exemplo, considerando que o código criado recebeu o nome de 'cat_falsificado':
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "bib_arqs.h"
+
+
+int tam_arq_texto(char *nome_arquivo)
+{
+
+	int i = 0;
+	char c;
+	int fp;
+
+	fp = open(nome_arquivo, O_WRONLY | O_CREAT , S_IRWXU);
+ 
+	while(read (fp, &c, sizeof(c))!= 0)
+	{ 
+		i = i++;
+	}
+
+	close(fp);
+    	return (i);
+ }
+
+
+void le_arq_texto(char *nome_arquivo, char *conteudo){
+
+	int i = 0;
+	char c;
+	int fp;
+
+	//Abre o arquivo para a leitura 
+	fp = open(nome_arquivo, O_RDONLY | O_CREAT , S_IRWXU);
+
+	// c armazena o caracter lido do artigo( ler caracter por caracter)
+	while(read (fp, &c, sizeof(c))!= 0)
+	{ 
+		//O conteudo recebe o caracter e armazena no vetor conteudo. Cada caracter ficará em uma posição
+		conteudo[i] = c;
+		i++;
+	}
+
+	close(fp);
+    	
+
+}
+
+No terminal:	
+$cd Documentos
+$cd Aula5
+$cd Code
+$gcc -c bib_arqs.c
+
+
+6. Crie um código em C que copia a funcionalidade básica do comando 'cat': escrever o conteúdo de um arquivo-texto no terminal. 
+Reaproveite as funções já criadas nas questões anteriores. Por exemplo, considerando que o código criado recebeu o nome de 
+'cat_falsificado':
 	$ echo Ola mundo cruel! Ola universo ingrato! > ola.txt
 	$ ./cat_falsificado ola.txt
 	$ Ola mundo cruel! Ola universo ingrato!
