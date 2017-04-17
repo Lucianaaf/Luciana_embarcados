@@ -24,17 +24,54 @@ O tempo de cada processo assim como o comando que o gerou. Pode ser visto usando
  $ps aux
 
 2. De onde vem o nome fork()?
+O nome fork ao traduzir traz uma ideia de bifurcação, a característica nos sistemas Unix ou Linux do fork 
+é de duplicar um processo. Exemplo: processo pai e filho.
+Quando usamos o fork, cria-se o processo filho, que será idêntico ao pai, inclusive tendo as mesmas variáveis, 
+registros, descritores de arquivos etc. O processo filho é uma cópia do pai.
+
 
 3. Quais são as vantagens e desvantagens em utilizar:
 	(a) system()?
+	
+O que e: Função da Biblioteca stdlib.h 
+Vantagens: Permite executar um comando dentro de um programa, criando um sub-processo (processo filho).
+	   A função retorna na saída o status do comando no shell. Caso o shell não seja executado, o system retorna o valor 127,
+	   se um erro ocorrer o system retorna -1;
+Desvantagens: O uso do system() não é recomendado. É simples, mas dá brechas e falhas de execução, pois depende muito do sistema.
+
+
 	(b) fork() e exec()?
+	
+No Unix não há como criar um processo de outro diretamente. 
+Para isso, utiliza-se a função fork(), que cria uma cópia do processo atual. 
+Vantagens: O fork() cria uma cópia, processo filho, e quando executado(PC é igual) o que acontece em um processo não ocorre no 
+	   outro, são processos distintos agora, cada um seguindo seu rumo, onde é possível mudar o valor de uma variável em um 
+	   e isso não irá alterar o valor desta variável no outro processo, por exemplo. A função exec() substitui o conteúdo do
+	   novo processo em um novo programa(as variáveis passam a ser independentes perante os dois processos). Quando um 
+	   programa chama afunção exec() , o processo cessa a execução do programa corrente e passa a executar um novo programa.
+	   
+Desvantagens: Os dois processos gerados podem acabar alterando a mesma variável ou aqruivo.
 
 4. É possível utilizar o exec() sem executar o fork() antes?
+Não, pois primeiro tem de ser feito o fork(), para criar a cópia e somente depois pode-se escrever.
 
 5. Quais são as características básicas das seguintes funções:
-	(a) execp()?
-	(b) execv()?
-	(c) exece()?
-	(d) execvp()?
+(a) execp()?
+
+Em seguida, usamos a função execv que vai criar um novo processo, um processo filho, que é a execução do programa "teste".
+Esse programa "teste" exibe sua pid, que também é 11685, mesmo pid do processo pai.
+Por fim, tem um printf "Eu tenho um segredo pra contar", que não é exibido.
+A função execv mata o processo pai, e o filho pega sua PID.
+Por isso o último print não apareceu, pois o processo pai foi substituído pelo filho!
+
+
+(b) execv()?
+funções com terminação v aceitam que a lista de argumentos do novo programa seja nula.
+
+(c) exece()
+funções com terminação e aceitam um argumento adicional. 
+
+(d) execvp()?
+aceitam que o nome ou procura do programa esteja no current.path
 	(e) execve()?
 	(f) execle()?
