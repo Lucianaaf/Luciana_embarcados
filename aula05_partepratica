@@ -122,6 +122,55 @@ o nome de 'ola_usuario_2':
 	$ Nome: Eu
 	$ Idade: 30 anos
 	$
+Cdigo em c:
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+int main(int argc, const char * argv[])
+{
+
+	int fp;
+	int i;
+	char nome[50];
+	char idade[50];
+
+	//abrir o arquivo
+	fp = open (argv[1], O_WRONLY | O_CREAT, S_IRWXU);
+	if(fp==-1)
+	{
+		printf ("Erro na abertura do arquivo.\n");
+		exit (1);
+	}
+	
+	write(fp, "Nome: ", 6*sizeof(char)); 
+		for(i = 0; argv[1][i]; i++)
+		{	
+	 		write(fp, &(argv[1][i]), 1); 
+		}
+	
+	write(fp, "\r\n", 2);
+
+	write(fp, "Idade: ", 7*sizeof(char)); 
+		for(i=0; argv[2][i]; i++)
+		{	
+			write(fp, &(argv[2][i]), 1); 
+		}
+
+	write(fp, " anos", 5);
+	write(fp, "\r\n", 2);
+
+	close(fp);
+	return 0;
+}
+
+No terminal:	
+$gcc exercicio3.c -o exer3
+$ ./exer3 Vitor 15
+$ cat Vitor
+Nome: Vitor
+Idade: 15 anos
 
 4. Crie uma função que retorna o tamanho de um arquivo, usando o seguinte protótipo:
 
