@@ -2,9 +2,26 @@ Data: 28/03/2017
 
 1. Como se utiliza o comando 'ps' para:
 	(a) Mostrar todos os processos rodando na máquina?
+$ps
 	(b) Mostrar os processos de um usuário?
+Mostra todos os usuários e os processos
+$ps aux
+
+Para mostrar de um usuário específico:
+$ps -f -u luciana
+
+O parâmetro aux faz com que o comando ps mostre todos os processos do sistema e seus respectivos usuários.
+
 	(c) Ordenar todos os processos de acordo com o uso da CPU?
+	
+Classificar os processos em ordem de utilização da CPU (“pcpu”):
+$ps aux --sort=-pcpu
+
 	(d) Mostrar a quanto tempo cada processo está rodando?
+O tempo de cada processo assim como o comando que o gerou. Pode ser visto usando:
+ $ps ax 
+ ou
+ $ps aux
 
 2. De onde vem o nome fork()?
 
