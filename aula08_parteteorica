@@ -2,7 +2,30 @@ Data: 04/03/2017
 
 1. Quais são as vantagens e desvantagens em utilizar:
 	(a) fork?
+Vantagens:	
+O fork é uma função que é uma chamada de sistema. Esse função é usada para criar um novo processo em sistemas do tipo Unix, 
+Quando criamos um processo por meio do fork, dizemos que esse novo processo é o filho, e processo pai é aquele que usou o fork.
+Por exemplo, suponha que você programou um software em C, e nele usou a chamada fork(). Esse programa em C é o processo pai.
+O processo filho é criado e será igual ao pai, inclusive tendo as mesmas variáveis.Ou seja, o processo filho é uma cópia do pai.
+Porém, o o processo filho é independente em relação ao processo pai, o que acontece em um não ocorre no outro.
+
+Desvantagens: Ao fazer o fork() o processo pai e filho serão idênticos, porém as variáveis imbutidas nesses processos não poderam 
+ser usadas para ligar os dois processos, pois elas são idependentes.
+
 	(b) threads?
+	
+Vantagens: As thereads permitem que um programa realize mais de uma operação simultaneamente. O kernel do Linux organiza as threads
+assincronamente, interrompendo cada thread para que todas possam ser executadas. Sendo assim, a thread é uma sequência de 
+comandos executados dentro programa ou processo. Se você tem duas threads, terá duas sequências de comandos rodando em paralelo 
+no mesmo processo. As threads permitem o compartilhamento de variáveis, ou seja, têm a mesma visão da memória ocupada pelo 
+processo. Logo, as variáveis e funções de uma thread podem ser acessadas também pelas outras threads. Não precisa de pipes para a 
+comunicação. Um processo normalmente inicia rodando uma única thread, a qual pode se subdividir em uma segunda thread(uma thread nascendo da 
+divisão de uma já existente). 
+
+Desvantagens: 
+Como a thread compartilha as memas variáveis, pode-se fazer confusão perante o uso das mesmas. Deve-se ter cautela. Uma thread
+pode incrementar uma variável global compartilhada, quase simultaneamente a outra thread que decrementa a mesma variáel global
+compartilhada.
 
 2. Quantas threads serão criadas após as linhas de código a seguir? Quantas coexistirão? Por quê?
 	(a)
@@ -18,6 +41,11 @@ Data: 04/03/2017
 			pthread_join(t2, NULL);
 			return 0;
 		}
+		
+Serão criadas duas threads, t1 e t2, nesse caso as duas threads irão coexistir. Nota-se pelo código que a thread t2 só será 
+finalizada quando a thread t1 for finalizada, devido as linhas de código da função pthread_join. Esta função força a main()
+ficar ativa para que todas as threads possam ser executadas.
+
 
 	(b)
 		void* funcao_thread_1(void *arg);
@@ -32,10 +60,36 @@ Data: 04/03/2017
 			pthread_join(t2, NULL);
 			return 0;
 		}
+		
+Serão criadas duas threads, t1 e t2. Nota-se pelo código que a thread t2 só será  criada quando a thread t1 for finalizada, 
+devido as linhas de código da função pthread_join. 
 
 3. Apresente as características e utilidades das seguintes funções:
 	(a) pthread_setcancelstate()
+Protótipo:
+int pthread_setcancelstate(int state, int *oldstate);
+	
+Caracteríticas: ajusta o estado de cancelamento da thread para o valor dado no estado . O anterior
+       		O estado de cancelamento é retornado no buffer apontado por oldstate .
+       
+PTHREAD_CANCEL_ENABLE: thread é cancelável. Determina como  thread reagirá ao pedido de cancelamento recebido.
+
+PTHREAD_CANCEL_DISABLE: a thread não é cancelável. Se cancellation request for recebido, o 
+cancelamento fica bloqueado até que o estado de cancelamento (cancelability) seja habilitado.
+
 	(b) pthread_setcanceltype()
+	
+pthread_setcanceltype()
+
+Protótipo:
+int pthread_setcanceltype (int type, int *oldtype);
+
+Características: ajusta o tipo de cancelamento da thread.
+ 
+PTHREAD_CANCEL_DEFERRED: pedido de cancelamento recebido é preterido até a chamada de função que é cancellation point
+
+PTHREAD_CANCEL_ASYNCHRONOUS: a thread  pode ser cancelada a qualquer momento, tipicamente assim que receber o pedido de 
+cancelamento.
 (DICA: elas são relacionadas à função pthread_cancel().)
 
 
