@@ -5,6 +5,93 @@ Data: 30/03/2017
 enviar o número 10, ele aguarda 1 segundo e termina a execução. O processo-filho escreve na tela cada valor recebido, e quando 
 ele receber o valor 10, ele termina a execução.
 
+Código em c:
+#include <stdio.h> //cabeçalho com a definição das funções de E/S dos arquivos como, por exemplo, printf( ). 
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+#include <string.h> // cabeçalho com a definição dos sinais. 
+#include <sys/types.h>
+#include <fcntl.h>
+
+int main()
+{
+	//pid do processo filho
+	pid_t pid_child;
+
+	//descritor do pipe
+	int fd[2];
+
+	// Cria o pipe
+	pipe(fd);
+
+	// Cria o processo filho
+	pid_child= fork();
+
+	// Codigo do filho
+	if(pid_child == 0)
+	{
+		int buffer_filho, i;
+		printf("Filho vai ler o pipe\n");
+		for(i = 0;i < 10; i++)
+		{
+			if(read(fd[0], &buffer_filho, sizeof(int)) < 0) 
+			{
+				printf("Erro na leitura do pipe\n");
+			}
+			else{
+				printf("Valor lido pelo filho = %d\n", buffer_filho);
+			}
+			sleep(1);
+		}
+		
+	}
+	printf("Execução do processo filho terminada! \n");
+
+	// Codigo do pai
+	else
+	{
+		int buffer_pai, i;
+		printf("Pai vai escrever no pipe\n");
+		for(i = 0;i < 10; i++)
+		{
+			buffer_pai = i+1;
+			if (write(fd[1], &buffer_pai, sizeof(buffer_pai)) < 0)
+			{
+				printf("Erro na escrita do pipe\n");
+			}
+				
+			sleep(1);
+		}
+		printf("Execução do pai terminada! \n");
+		
+			
+	}
+
+	return 0;
+}
+
+No terminal:
+Programa tentativa = exercicio1
+$gcc exercicio1.c -o exercicio1
+$./exercio1
+bash: ./exerccio1: No such file or directory
+$ gcc tentativa1.c -o tente1
+$ ./tente1
+Filho vai ler o pipe
+Valor lido pelo filho = 1
+Valor lido pelo filho = 2
+Valor lido pelo filho = 3
+Valor lido pelo filho = 4
+Valor lido pelo filho = 5
+Valor lido pelo filho = 6
+Valor lido pelo filho = 7
+Valor lido pelo filho = 8
+Valor lido pelo filho = 9
+Valor lido pelo filho = 10
+Pai terminando sua execução
+Filho terminando sua execução
+
 2. Crie um programa em C que cria um processo-filho e um pipe de comunicação. Utilize o pipe para executar a seguinte conversa 
 entre processos:
 
@@ -14,19 +101,347 @@ entre processos:
 	PAI: Sim, mas é uma coisa difícil de ser praticada até mesmo por um velho como eu...
 
 Neste exercício, quem recebe a mensagem via pipe é quem as escreve no terminal.
+Código em c:
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <signal.h>
 
-3. Crie um programa em C que cria dois processos-filhos e um pipe de comunicação. Utilize o pipe para executar a seguinte conversa
-entre processos:
+
+int main()
+{
+    pid_t pid_child;
+
+    int fd[2];
+    
+    pipe(fd);
+    pid_child = fork();
+
+    // Codigo do filho    
+    if(pid_child == 0)
+    {
+        
+        char buffer_filho[100];
+	//Primeira frase do filho
+        strcpy(buffer_filho," Pai, qual é a verdadeira essência da sabedoria? ");
+	//Comunicação de escrita
+	if (write(fd[1], buffer_filho, sizeof(buffer_filho)) < 0)
+        {
+            printf("Erro na escrita do pipe\n");
+        }
+        sleep(1); 
+	//Comunicação de leitura:
+        if(read(fd[0], buffer_filho, 100) < 0) 
+        {
+            printf("Erro na leitura do pipe\n");
+        }
+        else
+        {
+            printf("Pai = %s\n", buffer_filho);
+        }
+	//Segunda frase do filho:
+        strcpy(buffer_filho," Mas até uma criança de três anos sabe disso! ");
+        if (write(fd[1], buffer_filho, sizeof(buffer_filho)) < 0)
+        {
+            printf("Erro na escrita do pipe\n");
+        }
+        sleep(1);
+
+        if(read(fd[0], buffer_filho, 100) < 0) 
+        {
+            printf("Erro na leitura do pipe\n");
+        }
+        else
+        {
+            printf("Pai = %s\n", buffer_filho);
+        }
+
+
+    }
+    
+    // Codigo do pai
+    else
+    {
+        char buffer_pai[100];
+        if(read(fd[0], buffer_pai, 100) < 0) 
+        {
+            printf("Erro na leitura do pipe\n");
+        }
+        else
+        {
+            printf("Filho = %s\n", buffer_pai);
+        }
+	//Primeira frase do pai
+        strcpy(buffer_pai," Não façais nada violento, praticai somente aquilo que é justo e equilibrado. ");
+        if (write(fd[1], buffer_pai, sizeof(buffer_pai)) < 0)
+        {
+            printf("Erro na escrita do pipe\n");
+        }
+        sleep(2); 
+
+        if(read(fd[0], buffer_pai, 100) < 0) 
+        {
+            printf("Erro na leitura do pipe\n");
+        }
+        else
+        {
+            printf("Filho = %s\n", buffer_pai);
+        }
+	//Segunda frase do pai
+        strcpy(buffer_pai,"Sim, mas é uma coisa difícil de ser praticada até mesmo por um velho como eu...");
+
+        if (write(fd[1], buffer_pai, sizeof(buffer_pai)) < 0)
+        {
+            printf("Erro na escrita do pipe\n");
+        }
+    }
+    sleep(2);
+
+
+    return 0;
+}
+No terminal:
+$ gcc exercicio2.c -o tente2 
+$ ./tente2
+Filho =  Pai, qual é a verdadeira essência da sabedoria? 
+Pai =  Não façais nada violento, praticai somente aquilo que é justo e equilibrado. 
+Filho =  Mas até uma criança de três anos sabe disso! 
+Pai = Sim, mas é uma coisa difícil de ser praticada até mesmo por um velho como eu...
+
+3. Crie um programa em C que cria dois processos-filhos e um pipe de comunicação. Utilize o pipe para executar a seguinte 
+conversa entre processos:
 
 	FILHO1: Quando o vento passa, é a bandeira que se move.
 	FILHO2: Não, é o vento que se move.
 	PAI: Os dois se enganam. É a mente dos senhores que se move.
 
 Neste exercício, quem recebe a mensagem via pipe é quem as escreve no terminal.
+Código em C:
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <signal.h>
+
+
+int main()
+{
+    	pid_t pid_child1;
+	pid_t pid_child2;
+
+    	int fd[2];
+    
+    	pipe(fd);
+    	
+	pid_child1 = fork();
+
+    	// Codigo do filho 1   
+    	if(pid_child1 == 0)
+    	{
+        
+        	char buffer_filho[100];
+		//Primeira frase do filho
+        	strcpy(buffer_filho," Quando o vento passa, é a bandeira que se move. ");
+		//Comunicação de escrita
+		if (write(fd[1], buffer_filho, sizeof(buffer_filho)) < 0)
+        	{
+            		printf("Erro na escrita do pipe\n");
+        	}
+       		sleep(2); 
+		//Comunicação de leitura:
+        	if(read(fd[0], buffer_filho, 100) < 0) 
+        	{
+            		printf("Erro na leitura do pipe\n");
+        	}
+        	else
+        	{
+            		printf("PAI: %s\n", buffer_filho);
+       		 }
+
+	}
+	else
+    	{	// Codigo do filho 2
+        	pid_child2 = fork();
+		
+        	if(pid_child2 == 0)
+		{
+            		char buffer_filho[100];
+			if(read(fd[0], buffer_filho, 100) < 0)
+            		{
+                	    printf("Erro na leitura do pipe\n");
+            		}
+            		else
+            		{
+               		    printf("FILHO1: %s\n", buffer_filho);
+            		}
+
+            		strcpy(buffer_filho," Não, é o vento que se move.");
+
+            		if (write(fd[1], buffer_filho, sizeof(buffer_filho)) < 0)
+			{
+                            printf("Erro na escrita do pipe\n");
+            		}
+		
+
+        	}
+
+    
+    		// Codigo do pai
+    		else
+    		{
+        		sleep(1);
+			char buffer_pai[100];
+                	if(read(fd[0], buffer_pai, 100) < 0) 
+            		{
+                   	   printf("Erro na leitura do pipe\n");
+                	 }
+               		else
+            		{
+                	   printf("FILHO2: %s\n", buffer_pai);
+            		}
+
+			//Frase do pai
+       			strcpy(buffer_pai," Os dois se enganam. É a mente dos senhores que se move. ");
+        		if (write(fd[1], buffer_pai, sizeof(buffer_pai)) < 0)
+        		{
+            	   	   printf("Erro na escrita do pipe\n");
+        		}
+		}
+        	sleep(1); 
+
+       	}
+
+
+    return 0;
+}
+
+
+No terminal:
+$ gcc exercicio3.c -o tente3 
+$ ./tente3
+FILHO1:  Quando o vento passa, é a bandeira que se move. 
+FILHO2:  Não, é o vento que se move.
+PAI:  Os dois se enganam. É a mente dos senhores que se move. 
 
 4. Crie um programa em C que cria um processo-filho e um pipe de comunicação. O processo-filho deverá pedir o nome do usuário, 
 envia-lo para o pai via pipe, e o pai deverá escrever o nome do usuário no terminal.
+Código em c:
+#include <stdio.h> //cabeçalho com a definição das funções de E/S dos arquivos como, por exemplo, printf( ). 
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+#include <string.h> // cabeçalho com a definição dos sinais. 
+#include <sys/types.h>
+#include <fcntl.h>
+
+
+int main()
+{
+    	pid_t pid_child1;
+	
+	char nome_usuario1[50];
+    	char nome_usuario[50];
+
+    	int fd[2];
+    
+    	pipe(fd);
+    	
+	pid_child1 = fork();
+
+    	// Codigo do filho    
+    	if(pid_child1 == 0)
+    	{
+        	printf("Usuário digite o seu nome: ");
+        	scanf("%s",nome_usuario1);
+
+        	if(write(fd[1], nome_usuario1, sizeof(nome_usuario1)) < 0)
+        	{
+            		printf("Erro na escrita do pipe\n");
+        	}
+    	}
+    
+    	// Codigo do pai
+    	else
+    	{
+        	if(read(fd[0], nome_usuario, 50) < 0)
+        	{
+                   printf("Erro na leitura do pipe\n");
+        	}
+        	else
+        	{
+                   printf("O nome difitado foi: %s\n",nome_usuario);
+       		}
+   	 }
+   
+	 return 0;
+}
+No terminal:
+$ gcc exercicio4.c -o tente4 
+$ ./tente4
+Usuário digite o seu nome: Luciana
+O nome difitado foi: Luciana
 
 5. Utilize o sinal de alarme para chamar a cada segundo o comando 'ps' ordenando todos os processos de acordo com o uso da CPU. 
 Ou seja, seu código atualizará a lista de processos a cada segundo. Além disso, o código deverá tratar o sinal do CTRL-C, 
 escrevendo "Processo terminado!" na tela antes de terminar a execução do processo.
+
+Código em c:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+
+void processo_finalizado()
+{
+	printf("Processo finalizado!\n");
+	exit(1);
+}
+
+
+void tratamento_alarme(int sig)
+{
+	system("ps");
+	alarm(1);
+}
+
+int main()
+{
+	signal(SIGALRM, tratamento_alarme);
+	signal(SIGINT, processo_finalizado);
+	alarm(1);
+	printf("Aperte CTRL+C para acabar:\n");
+	while(1);
+	return 0;
+}
+
+No terminal:
+$ gcc exercicio5.c -o tente5 
+$ ./tente5
+Aperte CTRL+C para acabar:
+  PID TTY          TIME CMD
+ 3338 pts/0    00:00:01 bash
+13556 pts/0    00:00:01 tente5
+13557 pts/0    00:00:00 sh
+13558 pts/0    00:00:00 ps
+  PID TTY          TIME CMD
+ 3338 pts/0    00:00:01 bash
+13556 pts/0    00:00:02 tente5
+13559 pts/0    00:00:00 sh
+13560 pts/0    00:00:00 ps
+  PID TTY          TIME CMD
+ 3338 pts/0    00:00:01 bash
+13556 pts/0    00:00:03 tente5
+13561 pts/0    00:00:00 sh
+13562 pts/0    00:00:00 ps
+  PID TTY          TIME CMD
+ 3338 pts/0    00:00:01 bash
+13556 pts/0    00:00:04 tente5
+13563 pts/0    00:00:00 sh
+13564 pts/0    00:00:00 ps
+^CProcesso finalizado!
