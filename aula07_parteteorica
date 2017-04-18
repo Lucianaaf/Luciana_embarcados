@@ -19,17 +19,31 @@ Data: 30/03/2017
 2. Apresente mais cinco sinais importantes do ambiente Unix, além do SIGSEGV, SIGUSR1, SIGUSR2, SIGALRM e SIGINT. 
 Quais são suas características e utilidades?
 
-Tipo de sinal:
- SIGSEGV:Esse sinal é enviado para indicarque a segmentação foi violada
- SIGUSR1
- SIGUSR2
- SIGALRM
- SIGINT
+Tipos de sinais da biblioteca  signal.h:
+ SIGSEGV:Esse sinal é enviado para indicarque a segmentação foi violada, isso significa que houve uma tentativa de acesso de um
+ 	 dado fora do domínio de endereçamento do processo.
+ 
+ SIGUSR1:é um sinal utilizado para a comunicação entre processos. Primeiro sinal que o usuário tem acesso.
+ 	 Sinal definido pelo usuário 1
+ 
+ SIGUSR2:é um sinal utilizado na comunicação interprocessual. Sinal disponível e definido pelo usuário 2.
+ 
+ SIGALRM:quando um relógio de um processo para, coloca-se o relógio em funcionamento utilizando a primitiva alarm().
+ 
+ SIGINT:Esse sinal é emitido aos processos do terminal quando uma interrupção é acionada ao utilizar as teclas (CTRL+c), INTR.
 	
-SIGKILL: apresenta como característica a destruição. Esse sinal mata os processos e não pode ser interrompido.
-SIGCLD: Morte do processo filho. É um sinal enviado ao processo pai para avisar que o processo filho foi finalizado.
+ SIGKILL: apresenta como característica a destruição. Esse sinal mata os processos e não pode ser interrompido.
+ 
+ SIGCLD: Morte do processo filho. É um sinal enviado ao processo pai para avisar que o processo filho foi finalizado.
 
+ SIGTERM: esse sinal é emitido quando o processo termina de maneira normal. Quando um sistema quer por fim a execução de todos os
+ 	 programas dos processos ativos também usa-se esse sinal.
+ 
+ SIGPWR: Reativação sobre pane elétrica.
+ 
+ SIGIOT:indica problemas de hardware e consequetemente de instrução de E/S.
 
+ SIGSTOP - bloqueia um processo.
 
 3. Considere o código a seguir:
 1. #include <signal.h>
@@ -51,5 +65,8 @@ SIGCLD: Morte do processo filho. É um sinal enviado ao processo pai para avisar
 17. while(1);
 18. return 0;
 19. }
+
 Sabendo que a função alarm() tem como entrada a quantidade de segundos para terminar a contagem, quão precisos são os 
 alarmes criados neste código? De onde vem a imprecisão? Este é um método confiável para desenvolver aplicações em tempo real?
+
+alarm(n) - envia ao processo invocador um sinal SIGALRM dentro de n segundos, mesmo que este não esteja a ser executado.
