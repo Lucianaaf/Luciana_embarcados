@@ -1,0 +1,41 @@
+Data: 20/04/2017
+
+1. Apresente 5 sistemas operacionais suportados pelo Raspberry Pi, e algumas de suas características.
+
+Raspbian:
+O Raspbian é uma versão do sistema Debian a qual permite rodar Raspberry. O Raspbian pode ser visto como um sistema operacional 
+padrão para a Raspberry. Como carcterísticas o sistema possui softwares de escritório, permite a navegação na interne além de 
+ferramentas para configuração do computador e densenvolvimento. Esse sistema é ideal para iniciantes em Raspberry.
+
+Ubuntu:
+O Ubuntu é a versão Linux e existem várias versões do sistema que são compatíveis com o Raspberry. 
+A MATE é a mais usada para essa finalidade, pois é uma edição mais leve. Como características o sistema possui aplicativos
+embarcados, como LibreOffice, aplicativos tradicionais e repositórios da Canonical(permite baixar mais ferramentas). Esse 
+sistema é ideal para quem quer fazer do Raspberry um desktop.
+
+OSMC:
+O OSMC é um sistema operacional que torna o Raspberry um media center completo. Como características permite o acesso a canais 
+na internet, reprodução de áudio e vídeo com qualidade. Ou seja, é ideal para quem quer transformar o Raspberry Pi em uma TV.
+2. Apresente as formas de instalação de sistemas operacionais para o Raspberry Pi.
+
+Recalbox:
+O Recalbox é um sistema que permite ao Raspberry Pi emular vídeo games antigos.  Como caracteríticas ele possibilita a emulação
+de clássicos como Atari, Master System, Mega Drive, Nintendinho, Super Nintendo, Playstation e etc, até de games de MS-DOS. 
+Esse sistema é ideal para quem deseja usar o Raspberry para jogar.
+
+Pidora:
+O sistema é uma junção de Pi com Fedora. O Pidora é ma versão compatível com o Raspberry que possui como características 
+promover acesso a apps presentes nas distros da Red Hat, navegação de Internet, ferramentas de escritório. Um recurso interessante
+do Pidora é o chamado modo Headless, que permite configurar o Raspberry sem monitor. O acesso nesse caso é feito via rede,
+por outro computador. Esse sistema é ideal para quem quer fazer do Raspberry com desktop.
+
+3. Apresente 3 formas de desenvolvimento de software para o Raspberry Pi.
+
+4. Apresente 3 formas de acesso remoto ao Raspberry Pi.
+
+5. Apresente as formas possíveis de compilação de código em C para o Raspberry Pi.
+
+6. Apresente as formas possíveis de compilação de código em Python para o Raspberry Pi.
+
+
+
