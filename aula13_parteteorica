@@ -16,7 +16,6 @@ sistema é ideal para quem quer fazer do Raspberry um desktop.
 OSMC:
 O OSMC é um sistema operacional que torna o Raspberry um media center completo. Como características permite o acesso a canais 
 na internet, reprodução de áudio e vídeo com qualidade. Ou seja, é ideal para quem quer transformar o Raspberry Pi em uma TV.
-2. Apresente as formas de instalação de sistemas operacionais para o Raspberry Pi.
 
 Recalbox:
 O Recalbox é um sistema que permite ao Raspberry Pi emular vídeo games antigos.  Como caracteríticas ele possibilita a emulação
@@ -29,9 +28,57 @@ promover acesso a apps presentes nas distros da Red Hat, navegação de Internet
 do Pidora é o chamado modo Headless, que permite configurar o Raspberry sem monitor. O acesso nesse caso é feito via rede,
 por outro computador. Esse sistema é ideal para quem quer fazer do Raspberry com desktop.
 
+2. Apresente as formas de instalação de sistemas operacionais para o Raspberry Pi.
+
+
+
+A instalação do um sistema operacional é realizada em um cartão SD(como o seu dispositivo de armazenamento) usando um um computador 
+com Windows, Mac ou Linux. Feito isso, o cartão deve ser inserido no Raspberry Pi. Instalação começará e o sistema operacional 
+é descompactado. Depois de instalar o sistema operacional, pode-se começar a instalar o softwaren de desenvolvimento. 
+
+
 3. Apresente 3 formas de desenvolvimento de software para o Raspberry Pi.
 
+Adafruit WebIDE:
+A empresa Adafruit criou WebIDE  para desenvolvimento de software para a Raspberry. O uso é simples,basta conectar o Raspberry Pi
+à rede local, fazer login no WebIDE através do navegador web para criar e editar os scripts nessa interface.
+Pode-se enviar os scripts para o dispositivo Pi. A WebiDE inclui um terminal,podendo enviar múltiplos comandos para o Raspberry Pi 
+a partir do navegador. 
+
+Eclipse: 
+A ferramenta de desenvolvimento Eclipse é um IDE (ambiente integrado de desenvolvimento) a qual permite o desenvolvimento em 
+várias linguagens como Java, C,C++, Python, Ada, Perl, PHP, JSP. Esse software promove características importantes, como 
+a possibilidade de vários usuários poderem trabalhar no mesmo projeto e extensão do IDE. É o IDE ideal para
+desenvolvedores de novos aplicativos. 
+
+
+Biicode: 
+Esse IDE pode ser usado no windowns, linux e Mac. O Biicode é um gerenciador de dependência de C/C++ para a compilação no 
+Raspberry. O Cross Compile permite trabalhar de  três modos: editar e compilar diretamente na Raspberry, 
+editar e compilar no computador e usando o Biicode passar para a Raspberry ou por acesso remoto.
+As dependências podem ser controladas escolhendo-se as versões dependentes  e criando arquivos com plano biicode.conf, permitindo
+a resolução de conflitos.
+
 4. Apresente 3 formas de acesso remoto ao Raspberry Pi.
+
+VNC:
+A conexão pelo protocolo VNC(virtual network computing) pela rede local permite controlar o Raspberry Pi de outro computador.
+o controle remoto do seu Raspberry Pi possibilita,por exemplo, a criação de uma central de monitoramento de sensores conectados 
+via sua GPIO ou de dispositivos conectados ao Pi pela GPIO.O acesso via VCN não é tão seguro, pois permite usuários indesejados.
+É um acesso à interface gráfica do PI.
+
+SSH: 
+O acesso via SSH( Secure Shell) oferece uma forma segura de acesso remoto através de um PC ou outro dispositivo.
+Basta selecionar SSH e escolher a opção enable. Usando Putty é necessário indicar o endereço IP do PI (para obter usa-se o 
+comando ifconfig). E desse modo pode-se acessar à shell do PI do computador.
+
+FTP:
+O acesso via FTP(Protocolo de Transferência de Arquivos) é uma forma bastante rápida de transferir arquivos.
+A transferência pode ser entendida como: tem-se um computador chamado "cliente" (quem solicita a conexão) e um servidor(quem recebe a 
+solicitação de transferência) o "cliente" seleciona os arquivos a serem enviados. Para que isso seja possível ele deverá informar
+um nome de usuário (ou username, em inglês) e uma senha (password), o nome do servidor ou seu endereço IP. Se os dados 
+forem corretos a conexão pode ser estabelecida via uma porta (port). As portas permitem a transferência de arquivos.
+
 
 5. Apresente as formas possíveis de compilação de código em C para o Raspberry Pi.
 
