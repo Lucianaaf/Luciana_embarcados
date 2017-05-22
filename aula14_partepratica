@@ -3,50 +3,187 @@ Data: 25/04/2017
 1. Escreva um código em C para gerar uma onda quadrada de 1 Hz em um pino GPIO do Raspberry Pi.
 
 #include "gpio_dev_mem.h"
+#include <time.h>
 
 
 int main(int argc, char **argv)
 {
-	
+	//Chamando a função de entrada e saída da biblioteca:
 	setup_io();
+	
+	//Definindo o pino 4 como saída:
 	OUT_GPIO(4);
-  while(1)
-  {
+
+	//Gerando a onda quadrada de 1hz setando o pino em 1 e limpando o mesmo.
+  	while(1)
+  	{
 	    GPIO_SET = 1<<4;
-	    sleep(0.5);
+	    usleep(500000);
 	    GPIO_CLR = 1<<4;
-	    sleep(0.5);
+	    usleep(500000);
       
-  }
+  	}
   return 0;
 } 
 
 2. Generalize o código acima para qualquer frequência possível.
+
+
 #include "gpio_dev_mem.h"
+#include <signal.h>
+
+
+
+void sair(){
+
+	exit(-1);
+
+}
 
 
 int main(int argc, char **argv)
 {
+
+	float periodo;
+
+	signal(SIGINT,sair);
+
+	//Entrada com uma frequencia qualquer:
+	printf("Digite o valor da frequencia em hertz?\n");
+	scanf("%f",&freq);
 	
+	//Calculo do periodo correspondente. 
+	periodo = 1/(2*(frequencia));
+	
+
+	//Chamando a função de entrada e saída da biblioteca:
 	setup_io();
+	
+	//Definindo o pino 4 como saída:
 	OUT_GPIO(4);
-  
-  ptus("Digite a frequência da onda quadrada.");
-  
-  while(1)
-  {
+
+	//Gerando a onda quadrada de 1hz setando o pino em 1 e limpando o mesmo.
+  	while(1)
+  	{
 	    GPIO_SET = 1<<4;
-	    sleep(0.5);
+	    sleep(periodo);
 	    GPIO_CLR = 1<<4;
-	    sleep(0.5);
+	    sleep(periodo);
       
-  }
+  	}
   return 0;
 } 
+
 
 3. Crie dois processos, e faça com que o processo-filho gere uma onda quadrada, enquanto o processo-pai lê um botão no GPIO, 
 aumentando a frequência da onda sempre que o botão for pressionado. A frequência da onda quadrada deve começar em 1 Hz, e dobrar 
 cada vez que o botão for pressionado. A frequência máxima é de 64 Hz, devendo retornar a 1 Hz se o botão for pressionado novamente.
 
+Usando a biblioteca Sys(atua por arquivo- é necessário
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <time.h>
+//#include <sys/types.h>
+
+//variável global
+int fd;
 
 
+
+void sair()
+{
+	//apagar a pasta 
+	fd = open("/sys/class/gpio/unexport", O_WRONLY);
+	write(fd,"17",2);
+	write(fd,"27",2);
+	close(fd);
+	
+	
+	exit(0);
+}
+
+int main(int argc, char **argv)
+{
+
+	int fp[2];
+
+	//declaração de processo-filho:
+	pid_t pid;
+
+	//declaração de pipe:
+	pipe(fp);
+
+	//Sinal de interrupção:
+	signal(SIGINT, sair);
+
+	//Processo filho:
+	//Irá gerar e dobrar a frequencia sempre que o botão for pressionado: 
+	if(pid == 0)
+	{
+		//Definição do export:
+		fd = open("/sys/class/gpio/export", O_WRONLY);
+		write(fd,"17",2);
+		close(fd);
+
+		//Definindo o pino 17 como saída:
+		fd = open("/sys/class/gpio/gpio17/direction", O_WRONLY);
+		write(fd,"out",4);
+		close(fd);
+
+		//Atribuindo valor ao pino 17 para gerar a onda:
+		fd = open("/sys/class/gpio/gpio17/value", O_WRONLY);
+
+		//leitura do arquivo do botão para ver se ele foi pressionado: 
+  		while(1)
+		{
+			read(fp[0], &botao, sizeof(botao)));
+			if(botao == '1')
+			{
+				freq = freq*2;
+				botao = 0;
+			}
+			//Geração da onda quadrada:
+			write(fd,"1",2);
+			sleep(5/freq);
+			write(fd,"0",2);
+			sleep(5/frequencia);
+		}
+	}
+	
+	//Processo pai: verifica se o botão foi pressionado
+	else {
+		//Definição do export:
+		fd = open("/sys/class/gpio/export", O_WRONLY);
+		write(fd,"27",2);
+		close(fd);
+
+		//Definindo o pino 27 como entrada:
+		fd = open("/sys/class/gpio/gpio27/direction", O_WRONLY);
+		write(fd,"in",4);
+		close(fd);
+
+		//Atribuindo valor ao pino 27 para gerar a onda:
+		fd = open("/sys/class/gpio/gpio27/value", O_WRONLY);
+
+		//O processo pai deve verificar se o botao foi pressionado para o processo filho alterar
+		while(1){
+			//reposicionado o ponteiro para o arquivo aberto:
+			lseek(fd, 0, SEEK_SET);
+			read(fd,&botao, 2);
+			
+			//Verfica se o botao foi pressionado e escreve no arquivo para o filho lê
+			if(botao == '1')
+			{
+				write(fp[1], &botao, sizeof(botao));
+			}
+	
+	
+	     }
+	
+
+	return 0;
+}
