@@ -4,119 +4,76 @@ Data: 11/05/2017
 para converter e enviar dados de 10 bits a cada 10 ms. Escreva o código para o Raspberry Pi receber estes dados, e cada 1 segundo 
 apresentar no terminal a média das últimas 100 amostras.
  
- 
- #include <unistd.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <signal.h>
-#include <time.h>
-#include <sys/poll.h>
-#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
 
-//variável global
-int fd;
+// Arquivo de acesso a porta serial
+//#define TTY "/dev/ttyAMA0"
+// Arquivo de acesso a porta serial
+// PARA O RASPBERRY PI 3
+#define TTY "/dev/ttyS0"
 
+int uart0_fd;
 
-
-void sair()
+void ctrl_c(int sig)
 {
-	//apagar a pasta 
-	fd = open("/sys/class/gpio/unexport", O_WRONLY);
-	write(fd,"17",2);
-	write(fd,"27",2);
-	close(fd);
-	
-	
-	exit(0);
+	puts(" Fechando " TTY "...");
+	close(uart0_fd);
+	exit(-1);
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
+	struct termios options;
+	//char user_input, msp430_return=0;
 
-	int fp[2];
-
-	//declaração de processo-filho:
-	pid_t pid;
-
-	//declaração de pipe:
-	pipe(fp);
-
-	//Sinal de interrupção:
-	signal(SIGINT, sair);
-	
-	pid = fork();
-
-	//Processo filho:
-	//Irá gerar e dobrar a frequencia sempre que o botão for pressionado: 
-	if(pid == 0)
+	signal(SIGINT, ctrl_c);
+	uart0_fd = open(TTY, O_RDWR); // | O_NOCTTY); // | O_NDELAY);
+	if(uart0_fd==-1)
 	{
-		//Definição do export:
-		fd = open("/sys/class/gpio/export", O_WRONLY);
-		write(fd,"17",2);
-		close(fd);
-
-		//Definindo o pino 17 como saída:
-		fd = open("/sys/class/gpio/gpio17/direction", O_WRONLY);
-		write(fd,"out",4);
-		close(fd);
-
-		//Atribuindo valor ao pino 17 para gerar a onda:
-		fd = open("/sys/class/gpio/gpio17/value", O_WRONLY);
-
-		//leitura do arquivo do botão para ver se ele foi pressionado: 
-  		while(1)
-		{
-			read(fp[0], &botao, sizeof(botao)));
-			
-			//Geração da onda quadrada:
-			write(fd,"1",2);
-			usleep(500000/freq);
-			write(fd,"0",2);
-			usleep(500000/frequencia);
-		}
+		puts("Erro abrindo a UART. Garanta que ela nao esteja sendo usada por outra aplicacao.");
+		return -1;
 	}
-	
-	//Processo pai: verifica se o botão foi pressionado
-	else {
-		//Definição do export:
-		fd = open("/sys/class/gpio/export", O_WRONLY);
-		write(fd,"27",2);
-		close(fd);
-
-		//Definindo o pino 27 como entrada:
-		fd = open("/sys/class/gpio/gpio27/direction", O_WRONLY);
-		write(fd,"in",4);
-		close(fd);
-
-		//Atribuindo valor ao pino 27 para verificar  botão:
-		fd = open("/sys/class/gpio/gpio27/value", O_WRONLY);
-
-		//O processo pai deve verificar se o botao foi pressionado para o processo filho alterar
-		while(1){
-			//reposicionado o ponteiro para o arquivo aberto:
-			lseek(fd, 0, SEEK_SET);
-			read(fd,&botao, 2);
+	puts(TTY " aberto.");
+	tcgetattr(uart0_fd, &options);
+	options.c_cflag = CS8 | CREAD | CLOCAL;
+	options.c_iflag = 0;
+	options.c_oflag = 0;
+	options.c_lflag = 0;
+	options.c_cc[VTIME] = 0;
+	options.c_cc[VMIN]  = 1;
+	cfsetospeed(&options, B9600);
+        cfsetispeed(&options, B9600);
+	tcflush(uart0_fd, TCIOFLUSH);
+	tcsetattr(uart0_fd, TCSANOW, &options);
+	puts("UART configurada:");
+	system("stty -F " TTY);
+	puts("");
+	//user_input = 1;
+	while(1)
+	{
+		int i;
+		int soma = 0;
+		char string[100];
+		for(i = 0; i < 100; i++)
+		{
+			read(uart0_fd, &string[i], sizeof(string[i]));
+			soma = soma + string[i];
+			usleep(10000);
 			
-			//Verfica se o botao foi pressionado e escreve no arquivo para o filho lê
-			if(botao == '0')
-			{
-				freq = freq*2;
-				//botao = 0;
-				//Verificar se a frequência chegou a 64 hz
-				if(freq == 128)
-				{
-					 freq = 1;
-				}
-				write(fp[1], &freq, sizeof(freq));
-			}
-	
-	
-	     }
-	
-
-	return 0;
+		}
+		media = soma/100;
+			//if(read(uart0_fd, &msp430_return, 1)==1)
+		printf("A media das 100 amostras e = %d\n", media);
+			
+		
+		puts("");
+	}
+	close(uart0_fd);
 }
 2. Considere um MSP430 sendo usado para leituras analógicas. O Raspberry Pi está conectado a ele via SPI, e é o mestre. O MSP430 
 foi programado para funcionar da seguinte forma:
