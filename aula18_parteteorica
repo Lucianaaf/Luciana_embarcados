@@ -8,11 +8,13 @@ Vantanens: foi desenvolvida para minimizar o número de conexões entre os CIs d
 Desvantagens:Comparada a comunicação SPI, a comunicação I2C é mais lenta. Por usarem o mesmo barramento para realizar a comunicação
              pode ocorrer conflito de endereçamento.
 
-
+	
 2. Considere o caso em que a Raspberry Pi deve receber leituras analógico/digitais de um MSP430, e que a comunicação entre os 
 dois é I2C. É tecnicamente possível que o MSP430 mande os resultados da conversão A/D a qualquer hora, ou ele deve aguardar a 
 Raspberry Pi fazer um pedido ao MSP430? Por quê? 
-Ele deve aguardar a Raspberry fazer o pedido  
+Ele deve aguardar a Raspberry fazer o pedido, pois na configuração I2C os primeiros bits depois do start conditional são os 
+do escravo correspondente mandado pelo mestre. Depois disso, tem-se um bit de leitura/escrtita que o mestre manda para o escravo
+dizer qual tem aquele endereço, o bit após isso 
 
 3. Se o Raspberry Pi tiver de se comunicar com dois dispositivos via I2C, como executar a comunicação com o segundo dispositivo?
 
