@@ -4,6 +4,120 @@ Data: 11/05/2017
 para converter e enviar dados de 10 bits a cada 10 ms. Escreva o código para o Raspberry Pi receber estes dados, e cada 1 segundo 
 apresentar no terminal a média das últimas 100 amostras.
  
+ 
+ #include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <time.h>
+#include <sys/poll.h>
+#include <sys/types.h>
+
+//variável global
+int fd;
+
+
+
+void sair()
+{
+	//apagar a pasta 
+	fd = open("/sys/class/gpio/unexport", O_WRONLY);
+	write(fd,"17",2);
+	write(fd,"27",2);
+	close(fd);
+	
+	
+	exit(0);
+}
+
+int main(int argc, char **argv)
+{
+
+	int fp[2];
+
+	//declaração de processo-filho:
+	pid_t pid;
+
+	//declaração de pipe:
+	pipe(fp);
+
+	//Sinal de interrupção:
+	signal(SIGINT, sair);
+	
+	pid = fork();
+
+	//Processo filho:
+	//Irá gerar e dobrar a frequencia sempre que o botão for pressionado: 
+	if(pid == 0)
+	{
+		//Definição do export:
+		fd = open("/sys/class/gpio/export", O_WRONLY);
+		write(fd,"17",2);
+		close(fd);
+
+		//Definindo o pino 17 como saída:
+		fd = open("/sys/class/gpio/gpio17/direction", O_WRONLY);
+		write(fd,"out",4);
+		close(fd);
+
+		//Atribuindo valor ao pino 17 para gerar a onda:
+		fd = open("/sys/class/gpio/gpio17/value", O_WRONLY);
+
+		//leitura do arquivo do botão para ver se ele foi pressionado: 
+  		while(1)
+		{
+			read(fp[0], &botao, sizeof(botao)));
+			
+			//Geração da onda quadrada:
+			write(fd,"1",2);
+			usleep(500000/freq);
+			write(fd,"0",2);
+			usleep(500000/frequencia);
+		}
+	}
+	
+	//Processo pai: verifica se o botão foi pressionado
+	else {
+		//Definição do export:
+		fd = open("/sys/class/gpio/export", O_WRONLY);
+		write(fd,"27",2);
+		close(fd);
+
+		//Definindo o pino 27 como entrada:
+		fd = open("/sys/class/gpio/gpio27/direction", O_WRONLY);
+		write(fd,"in",4);
+		close(fd);
+
+		//Atribuindo valor ao pino 27 para verificar  botão:
+		fd = open("/sys/class/gpio/gpio27/value", O_WRONLY);
+
+		//O processo pai deve verificar se o botao foi pressionado para o processo filho alterar
+		while(1){
+			//reposicionado o ponteiro para o arquivo aberto:
+			lseek(fd, 0, SEEK_SET);
+			read(fd,&botao, 2);
+			
+			//Verfica se o botao foi pressionado e escreve no arquivo para o filho lê
+			if(botao == '0')
+			{
+				freq = freq*2;
+				//botao = 0;
+				//Verificar se a frequência chegou a 64 hz
+				if(freq == 128)
+				{
+					 freq = 1;
+				}
+				write(fp[1], &freq, sizeof(freq));
+			}
+	
+	
+	     }
+	
+
+	return 0;
+}
 2. Considere um MSP430 sendo usado para leituras analógicas. O Raspberry Pi está conectado a ele via SPI, e é o mestre. O MSP430 
 foi programado para funcionar da seguinte forma:
 
@@ -11,5 +125,6 @@ foi programado para funcionar da seguinte forma:
 	II. 100us depois, o MSP430 recebe os bytes 0x01 e 0x02, e envia o byte menos significativo e o mais significativo da 
 	conversão de 10 bits, nesta ordem.
  
-Escreva o código para o Raspberry Pi executar este protocolo, de forma a obter conversões a cada 10 ms. A cada 1 segundo ele deve apresentar no terminal a média das últimas 100 amostras.
+Escreva o código para o Raspberry Pi executar este protocolo, de forma a obter conversões a cada 10 ms. A cada 1 segundo ele 
+deve apresentar no terminal a média das últimas 100 amostras.
 
